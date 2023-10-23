@@ -1,7 +1,7 @@
 <div class="col-md-6 offset-md-3">
   <div class="card bg-dark text-light">
     <div class="card-header">
-      <h1 class="h4 text-white">MÓDULO ADMINISTRADOR</h1>
+      <h1 class="h4 text-white text-uppercase">Módulo administrador</h1>
       <label for="lastname">Lista de administradores:</label>
     </div>
     <div class="card-body">
@@ -9,13 +9,13 @@
       <ul class="list-group">
         {{#each contacts}}
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          <div class="my-auto">
+          <div class="my-auto text-secondary">
             <h3 class="h6">{{firstname}} {{lastname}}</h3>
             <p>{{email}}</p>
           </div>
           <div>
-            <a href="/delete-contact/{{id}}" class="btn btn-danger">Eliminar</a>
-            <a href="/edit-contact/{{id}}" class="btn btn-secondary">Editar</a>
+            <a href="/delete-contact/{{id}}" class="btn btn-danger"><i class="fa-solid fa-trash mr-1"></i>Eliminar</a>
+            <a href="/edit-contact/{{id}}" class="btn btn-secondary"><i class="fa-solid fa-pen mr-1"></i>Editar</a>
           </div>
         </li>
         {{/each}}
@@ -49,19 +49,16 @@
           </div>
         </div>
         {{#if contact.id}}
-        <button class="btn btn-primary btn-block">
-          Guardar
-        </button>
-        <a href="/" class="btn btn-secondary">
-          Cancelar
+        <div class="row align-items-center ml-0 mt-2">
+          <button class="btn btn-success mr-2">Actualizar</button>
+          <a href="/" class="btn btn-secondary"><i class="fa-solid fa-arrow-left mr-1"></i>Cancelar</a>
+        </div>
         </a>
         {{else}}
-        <button class="btn btn-primary btn-block">
-          Agregar
-        </button>
-        <a href="/" class="btn btn-secondary">
-          Cancelar
-        </a>
+        <div class="row align-items-center ml-0 mt-2">
+          <button class="btn btn-primary mr-2"><i class="fa-solid fa-plus mr-1"></i>Agregar</button>
+          <a href="/" class="btn btn-secondary">Cancelar</a>
+        </div>
         {{/if}}
       </form>
     </div>
