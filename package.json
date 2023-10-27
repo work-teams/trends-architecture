@@ -1,5 +1,5 @@
 {
-  "name": "trends-architecture",
+  "name": "demo2",
   "version": "1.0.0",
   "description": "Trends Architecture Project",
   "main": "src/index.js",
@@ -26,7 +26,8 @@
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
     "firebase-admin": "^11.11.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",
