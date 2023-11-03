@@ -1,36 +1,29 @@
 {
-  "name": "demo2",
+  "name": "front_react",
   "version": "1.0.0",
-  "description": "Trends Architecture Project",
-  "main": "src/index.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "start": "node src/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/work-teams/trends-architecture.git"
-  },
-  "keywords": [
-    "identify",
-    "validation"
-  ],
-  "author": "Grup 1",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/work-teams/trends-architecture/issues"
-  },
-  "homepage": "https://github.com/work-teams/trends-architecture#readme",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "express-handlebars": "^7.1.2",
-    "firebase-admin": "^11.11.0",
-    "morgan": "^1.10.0",
-    "mysql": "^2.18.1"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-webcam": "^7.2.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "nodemon": "^3.0.1"
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-react": "^7.22.15",
+    "babel-loader": "^9.1.3",
+    "html-webpack-plugin": "^5.5.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   }
 }

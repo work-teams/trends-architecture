@@ -1,30 +1,46 @@
-const express = require("express");
-const path = require("path");
-const exphbs = require("express-handlebars");
-const morgan = require("morgan");
+import React, { useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+import Webcam from 'react-webcam';
 
-const app = express();
+function App() {
+  const webcamRef = useRef(null);
+  const [capturedImage, setCapturedImage] = useState(null);
 
-// Settings
-app.set("port", process.env.PORT || 3000);
-app.set("views", path.join(__dirname, "views"));
-app.engine(
-  ".hbs",
-  exphbs.create({
-    defaultLayout: "main",
-    extname: ".hbs",
-  }).engine
-);
-app.set("view engine", ".hbs");
+  const capture = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setCapturedImage(imageSrc);
+  };
 
-// middlewares
-app.use(morgan("dev"));
-app.use(express.urlencoded({ extended: false }));
+  const saveImage = () => {
+    if (capturedImage) {
+      const a = document.createElement('a');
+      a.href = capturedImage;
+      a.download = 'captured-image.jpg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  };
 
-// Routes
-app.use(require("./routes/index"));
+  return (
+    <div className="App">
+      <Webcam
+        audio={false}
+        ref={webcamRef}
+        screenshotFormat="image/jpeg"
+      />
+      <button onClick={capture}>Tomar Foto</button>
+      {capturedImage && (
+        <div>
+          <h2>Foto Capturada:</h2>
+          <img src={capturedImage} alt="Foto Capturada" />
+          <button onClick={saveImage}>Guardar Foto</button>
+        </div>
+      )}
+    </div>
+  );
+}
 
-// Static files
-app.use("/public", express.static(path.join(__dirname, "public")));
+ReactDOM.render(<App />, document.getElementById('root'));
 
-module.exports = app;
+export default App;
