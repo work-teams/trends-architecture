@@ -1,4 +1,7 @@
 # EJECUTAR PROYECTO
+Ejecutar local, no está configurado docker aún.
+instalar primero dependencias con: `npm i`.  
+Luego ejecutar la sentencia de abajo.
 `node src/backend/graphql.js`
 Esto levanta el Apolo Server y su interfaz en localhost
 
