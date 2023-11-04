@@ -6,6 +6,7 @@ document.getElementById("data-validation-form").addEventListener("submit", async
     await insertarLogEntry();
 });
 
+
 document.getElementById("volver-button").addEventListener("click", async function () {
     await obtenerLogEntries();
 });

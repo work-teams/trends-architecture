@@ -12,7 +12,7 @@ const resolvers = {
         // ... Resolver para persons y logEntries
         persons: async () => {
             const db = admin.database();
-            const ref = db.ref("persons"); // Ajusta el nombre de la referencia según tu estructura de datos
+            const ref = db.ref("persons");
             const snapshot = await ref.once("value");
             const data = snapshot.val();
             return Object.keys(data).map((key) => ({

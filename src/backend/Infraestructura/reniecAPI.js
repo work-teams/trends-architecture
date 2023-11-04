@@ -1,5 +1,3 @@
-// utils.js
-
 function generateRandomHash() {
     // Implementa la generación de un hash aleatorio según tus necesidades
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);

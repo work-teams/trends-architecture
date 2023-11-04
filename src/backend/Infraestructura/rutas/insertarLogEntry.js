@@ -1,4 +1,3 @@
-// insertarLogEntry.js
 import { generateRandomHash, generateCurrentDate, generateCurrentTime, limpiarFormulario } from './utils';
 
 async function insertarLogEntry() {

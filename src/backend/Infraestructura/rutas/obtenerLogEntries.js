@@ -1,5 +1,3 @@
-// obtenerLogEntries.js
-
 async function obtenerLogEntries() {
   try {
     const response = await fetch("http://localhost:4000/graphql", {
