@@ -1,6 +1,10 @@
 const express = require("express");
-const { db } = require("../firebase");
+const { db } = require("../DataBase/firebase");
 const router = express.Router();
+const kafka = require("../broker/kafka-node");
+const Producer = kafka.Producer;
+const client = new kafka.KafkaClient({ kafkaHost: "localhost:9092" });
+const producer = new Producer(client);
 
 // Middleware para manejar errores
 const asyncHandler = (fn) => (req, res, next) =>
@@ -25,12 +29,39 @@ router.post("/new-user", asyncHandler(async (req, res) => {
     email,
     phone,
   });
+
+  // Enviar un evento a Kafka para indicar la inserción
+  producer.send([
+    {
+      topic: "user-events",
+      messages: JSON.stringify({
+        action: "insert",
+        data: { firstname, lastname, email, phone },
+      }),
+    },
+  ]);
+
   res.redirect("/");
 }));
 
 // Ruta para eliminar un usuario
 router.get("/delete-user/:id", asyncHandler(async (req, res) => {
-  await db.collection("admin").doc(req.params.id).delete();
+  const doc = await db.collection("admin").doc(req.params.id).get();
+  if (doc.exists) {
+    await db.collection("admin").doc(req.params.id).delete();
+
+    // Enviar un evento a Kafka para indicar la eliminación
+    producer.send([
+      {
+        topic: "user-events",
+        messages: JSON.stringify({
+          action: "delete",
+          data: { id: req.params.id },
+        }),
+      },
+    ]);
+  }
+
   res.redirect("/");
 }));
 
@@ -46,6 +77,18 @@ router.post("/update-user/:id", asyncHandler(async (req, res) => {
   const { firstname, lastname, email, phone } = req.body;
   const { id } = req.params;
   await db.collection("admin").doc(id).update({ firstname, lastname, email, phone });
+
+  // Enviar un evento a Kafka para indicar la actualización
+  producer.send([
+    {
+      topic: "user-events",
+      messages: JSON.stringify({
+        action: "update",
+        data: { id, firstname, lastname, email, phone },
+      }),
+    },
+  ]);
+
   res.redirect("/");
 }));
 
