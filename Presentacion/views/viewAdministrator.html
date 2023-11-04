@@ -1,0 +1,65 @@
+<div class="col-md-6 offset-md-3">
+  <div class="card bg-dark text-light">
+    <div class="card-header">
+      <h1 class="h4 text-white text-uppercase">Módulo Administrador</h1>
+      <label for="lastname">Lista de Usuarios:</label>
+    </div>
+    <div class="card-body">
+      {{#if usuarios}}
+      <ul class="list-group">
+        {{#each usuarios}}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div class="my-auto text-secondary">
+            <h3 class="h6">{{firstname}} {{lastname}}</h3>
+            <p>{{email}}</p>
+          </div>
+          <div>
+            <a href="/delete-user/{{id}}" class="btn btn-danger"><i class="fa-solid fa-trash mr-1"></i>Eliminar</a>
+            <a href="/edit-user/{{id}}" class="btn btn-secondary"><i class="fa-solid fa-pen mr-1"></i>Editar</a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+      {{else}}
+      <p class="fs-4 text-center">Estás en modo edición.</p>
+      {{/if}}
+    </div>
+    <div class="card-footer">
+      <form action="{{#unless usuario.id}}/new-user{{else}}/update-user/{{usuario.id}}{{/unless}}" method="POST">
+        <div class="row">
+          <div class="col">
+            <label for="firstname">Nombres:</label>
+            <input type="text" name="firstname" placeholder="Nombres" class="form-control mb-3"
+              value="{{usuario.firstname}}" autofocus />
+          </div>
+          <div class="col">
+            <label for="lastname">Apellidos:</label>
+            <input type="text" name="lastname" placeholder="Apellidos" class="form-control mb-3"
+              value="{{usuario.lastname}}" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label for="email">Correo:</label>
+            <input type="email" name="email" placeholder="Correo" class="form-control mb-3" value="{{usuario.email}}" />
+          </div>
+          <div class="col">
+            <label for="phone">Teléfono:</label>
+            <input type="tel" name="phone" placeholder="Teléfono" class="form-control mb-3" value="{{usuario.phone}}" />
+          </div>
+        </div>
+        {{#if usuario.id}}
+        <div class="row align-items-center ml-0 mt-2">
+          <button class="btn btn-success mr-2">Actualizar</button>
+          <a href="/" class="btn btn-secondary"><i class="fa-solid fa-arrow-left mr-1"></i>Cancelar</a>
+        </div>
+        {{else}}
+        <div class="row align-items-center ml-0 mt-2">
+          <button class="btn btn-primary mr-2"><i class="fa-solid fa-plus mr-1"></i>Agregar</button>
+          <a href="/" class="btn btn-secondary">Cancelar</a>
+        </div>
+        {{/if}}
+      </form>
+    </div>
+  </div>
+</div>
