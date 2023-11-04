@@ -1,4 +1,4 @@
-import { generateRandomHash, generateCurrentDate, generateCurrentTime, limpiarFormulario } from './utils';
+import { generateRandomHash, generateCurrentDate, generateCurrentTime, limpiarFormulario } from '../reniecAPI';
 
 async function insertarLogEntry() {
     try {
