@@ -1,13 +1,15 @@
 # EJECUTAR PROYECTO
-Ejecutar local, no está configurado docker aún.
-instalar primero dependencias con: `npm i`.  
-Luego ejecutar la sentencia de abajo.
-`node src/backend/graphql.js`
-Esto levanta el Apolo Server y su interfaz en localhost
+El proyecto aún se encuentra para ejecutar en LOCAL, Docker aún no esta configurado.
+Se configurará Docker dentro de unas horas.
 
-Ejecutar el frontend desde live server.
-Por ahora el frontend no hace nada, está para conectarlo con el back
-en la logica de los botones.
+Comandos para levantar el proyecto en LOCAL:
+### FRONTEND
+- Cambiarse a la carpeta de vue-front `cd src/vue-front/`
+- Estando dentro de ella ejecutar el comando `npm run serve`
+
+### BACKEND
+- No es necesario cambiar de lugar.
+- Ejecutar el comando `node src/backend/server.js`
 
 # trends-architecture
 Repositorio para el curso de Tendencias de Arquitectura
