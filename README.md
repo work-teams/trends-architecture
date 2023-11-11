@@ -11,15 +11,15 @@ Ejecutar `npm i` en todas las carpetas Backend y Frontend de todos los microserv
 - Estando dentro de ella ejecutar el comando `npm run serve`
 
 #### Microservicio Validación Facial
+- Ingresar a carperta Frontend y ejecutar por consola los comandos `npm intall` y seguido de `npm start`
 
 ### BACKEND
 #### Microservicio Validación Sensible
 - No es necesario cambiar de lugar.
-- Ejecutar el comando `node src/backend/server.js`
+- Ejecutar el comando `node src/ms-val-sen/backend/server.js`
 
 #### Microservicio Validación Facial
 - Ingresar a carperta Backend y ejecutar por consola los comandos `npm intall` y seguido de `npm start`
-- Ingresar a carperta Frontend y ejecutar por consola los comandos `npm intall` y seguido de `npm start`
 
 # trends-architecture
 Repositorio para el curso de Tendencias de Arquitectura

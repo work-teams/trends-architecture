@@ -44,5 +44,5 @@ app.use('/graphql', graphqlHTTP({
     schema,
     graphiql: true
 }))
-app.listen(4000)
-console.log('Tu servidor GraphQL esta corriendo en <http://localhost:4000/graphql>')
+app.listen(4001)
+console.log('Tu servidor GraphQL esta corriendo en <http://localhost:4001/graphql>')
