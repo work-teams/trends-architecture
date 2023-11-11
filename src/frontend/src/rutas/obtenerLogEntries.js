@@ -1,6 +1,6 @@
 async function obtenerLogEntries() {
   try {
-    const response = await fetch("http://localhost:4000/graphql", {
+    const response = await fetch("https://msbacksen.onrender.com/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

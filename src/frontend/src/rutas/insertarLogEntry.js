@@ -12,7 +12,7 @@ async function insertarLogEntry() {
             hora,
         };
 
-        const logResponse = await fetch("http://localhost:4000/graphql", {
+        const logResponse = await fetch("https://msbacksen.onrender.com/graphql", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
