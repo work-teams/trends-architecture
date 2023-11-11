@@ -1,0 +1,15 @@
+type User {
+  name: String!
+  id: Int!
+}
+
+type Query {
+  """
+  Obtiene una lista de usuarios
+  """
+  users: [User]
+  """
+  Retorna un Usuario identificado por id
+  """
+  user(id: Int!): User
+}
