@@ -3,13 +3,23 @@ El proyecto aún se encuentra para ejecutar en LOCAL, Docker aún no esta config
 Se configurará Docker dentro de unas horas.
 
 Comandos para levantar el proyecto en LOCAL:
+Ejecutar `npm i` en todas las carpetas Backend y Frontend de todos los microservicios.
+
 ### FRONTEND
-- Cambiarse a la carpeta de vue-front `cd src/vue-front/`
+#### Microservicio Validación Sensibles
+- Cambiarse a la carpeta de vue-front `cd src/ms-val-sen/vue-front/`
 - Estando dentro de ella ejecutar el comando `npm run serve`
 
+#### Microservicio Validación Facial
+
 ### BACKEND
+#### Microservicio Validación Sensible
 - No es necesario cambiar de lugar.
 - Ejecutar el comando `node src/backend/server.js`
+
+#### Microservicio Validación Facial
+- Ingresar a carperta Backend y ejecutar por consola los comandos `npm intall` y seguido de `npm start`
+- Ingresar a carperta Frontend y ejecutar por consola los comandos `npm intall` y seguido de `npm start`
 
 # trends-architecture
 Repositorio para el curso de Tendencias de Arquitectura
