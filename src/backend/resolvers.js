@@ -32,6 +32,17 @@ const resolvers = {
             }));
             return logEntries;
         },
+
+        administrators: async () => {
+            const db = admin.database();
+            const ref = db.ref("administrators"); // Ajusta el nombre de la referencia según tu estructura de datos
+            const snapshot = await ref.once("value");
+            const data = snapshot.val();
+            return Object.keys(data).map((key) => ({
+                id: key,
+                ...data[key],
+            }));
+        },
     },
     Mutation: {
         // ... Resolver para addPerson y addLogEntry
@@ -65,6 +76,23 @@ const resolvers = {
             // Devuelve el registro de log recién insertado
             return {
                 id: newLogRef.key,
+                ...input,
+            };
+        },
+
+        addAdministrator: async (_, { input }) => {
+            const db = admin.database();
+            const adminRef = db.ref("administrators"); // Ajustar según la referencia para administradores
+
+            // Generar un nuevo ID para el administrador
+            const newAdminRef = adminRef.push();
+
+            // Insertar los datos del input en la base de datos
+            await newAdminRef.set(input);
+
+            // Devolver el administrador recién insertado
+            return {
+                id: newAdminRef.key,
                 ...input,
             };
         },
