@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
-import DataValidationForm from './DataValidationForm';
+// import DataValidationForm from './DataValidationForm';
+import WelcomeView from './WelcomeView';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     {/* <App /> */}
-    <DataValidationForm />
+    {/* <DataValidationForm /> */}
+    <WelcomeView />
   </React.StrictMode>
 );
 
