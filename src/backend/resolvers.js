@@ -96,6 +96,40 @@ const resolvers = {
                 ...input,
             };
         },
+
+        // ... Código existente para addPerson, addLogEntry y addAdministrator
+
+        updateAdministrator: async (_, { input }) => {
+            const db = admin.database();
+            const adminRef = db.ref("administrators");
+
+            const { id, nombres, apellidos, correo, telefono } = input;
+
+            try {
+                // Verificar si el administrador existe
+                const snapshot = await adminRef.child(id).once("value");
+                if (!snapshot.exists()) {
+                    throw new Error("Administrador no encontrado");
+                }
+
+                // Actualizar los campos si se proporcionan en el input
+                if (nombres) await adminRef.child(id).update({ nombres });
+                if (apellidos) await adminRef.child(id).update({ apellidos });
+                if (correo) await adminRef.child(id).update({ correo });
+                if (telefono) await adminRef.child(id).update({ telefono });
+
+                // Devolver el administrador actualizado
+                const updatedSnapshot = await adminRef.child(id).once("value");
+                return {
+                    id,
+                    ...updatedSnapshot.val(),
+                };
+            } catch (error) {
+                console.error("Error al actualizar el administrador:", error);
+                throw new Error("Error al actualizar el administrador");
+            }
+        },
+
     },
 };
 

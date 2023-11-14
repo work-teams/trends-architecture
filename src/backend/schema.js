@@ -42,6 +42,14 @@ const typeDefs = gql`
     telefono: String
   }
 
+  input UpdateAdministratorInput {
+    id: ID!
+    nombres: String
+    apellidos: String
+    correo: String
+    telefono: String
+  }
+
   input LogEntryInput {
     respuesta: String
     fecha: String
@@ -58,6 +66,7 @@ const typeDefs = gql`
     addPerson(input: PersonInput): Person
     addLogEntry(input: LogEntryInput): LogEntry
     addAdministrator(input: AdministratorInput): Administrator
+    updateAdministrator(input: UpdateAdministratorInput): Administrator
   }
 `;
 
