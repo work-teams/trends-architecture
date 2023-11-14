@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './DataValidationForm.css';
 import logo from './logo.svg';
 
@@ -27,7 +27,7 @@ class DataValidationForm extends React.Component {
                 hora,
             };
 
-            const logResponse = await fetch('https://msbacksen.onrender.com/graphql', {
+            const logResponse = await fetch('http://localhost:4000/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ class DataValidationForm extends React.Component {
 
     async obtenerLogEntries() {
         try {
-            const response = await fetch('https://msbacksen.onrender.com/graphql', {
+            const response = await fetch('http://localhost:4000/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
