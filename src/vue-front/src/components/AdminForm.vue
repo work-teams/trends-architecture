@@ -1,12 +1,19 @@
 <template>
     <div>
-        <h2>Crear Administrador</h2>
+        <h2>Gestión de Administradores</h2>
         <div class="form">
+            <label>Nombres:</label>
             <input type="text" v-model="nombres" placeholder="Nombres">
+            <label>Apellidos:</label>
             <input type="text" v-model="apellidos" placeholder="Apellidos">
+            <label>Correo:</label>
             <input type="email" v-model="correo" placeholder="Correo">
+            <label>Teléfono:</label>
             <input type="tel" v-model="telefono" placeholder="Teléfono">
-            <button @click="agregarAdmin">Agregar Administrador</button>
+
+            <button @click="agregarAdmin" v-if="!isEdit">Agregar Administrador</button>
+            <button @click="actualizarAdmin" v-if="isEdit">Actualizar Administrador</button>
+            <button @click="limpiarCampos">Limpiar Campos</button>
             <button @click="volver">Volver</button>
         </div>
 
@@ -15,19 +22,9 @@
             <ul>
                 <li v-for="(admin, index) in administradores" :key="index">
                     {{ admin.nombres }} {{ admin.apellidos }} - {{ admin.correo }} - {{ admin.telefono }}
-                    <button @click="seleccionarAdmin(admin)">Seleccionar</button>
+                    <button @click="seleccionarAdmin(admin)">Editar</button>
                 </li>
             </ul>
-        </div>
-
-        <h2>Datos del Administrador Seleccionado</h2>
-        <div class="selected-admin">
-            <input type="text" v-model="selectedAdmin.nombres" placeholder="Nombres">
-            <input type="text" v-model="selectedAdmin.apellidos" placeholder="Apellidos">
-            <input type="email" v-model="selectedAdmin.correo" placeholder="Correo">
-            <input type="tel" v-model="selectedAdmin.telefono" placeholder="Teléfono">
-            <button @click="actualizarAdmin">Actualizar Datos</button>
-            <button @click="limpiarCampos">Limpiar Campos</button>
         </div>
     </div>
 </template>
@@ -41,13 +38,8 @@ export default {
             correo: "",
             telefono: "",
             administradores: [],
-            selectedAdmin: {
-                id: null,
-                nombres: "",
-                apellidos: "",
-                correo: "",
-                telefono: ""
-            }
+            selectedAdmin: null,
+            isEdit: false,
         };
     },
     methods: {
@@ -57,9 +49,10 @@ export default {
                     nombres: this.nombres,
                     apellidos: this.apellidos,
                     correo: this.correo,
-                    telefono: this.telefono
+                    telefono: this.telefono,
                 };
 
+                // Lógica para agregar administrador en la base de datos...
                 const adminResponse = await fetch("http://localhost:4000/graphql", {
                     method: "POST",
                     headers: {
@@ -86,15 +79,62 @@ export default {
                 const adminData = await adminResponse.json();
                 console.log("Registro de administrador insertado:", adminData.data.addAdministrator);
 
+
                 this.limpiarFormulario();
                 this.actualizarListaAdmins();
             } catch (error) {
-                console.error("Error al insertar el registro de administrador:", error);
+                console.error("Error al agregar el administrador:", error);
+            }
+        },
+
+        async actualizarAdmin() {
+            try {
+                const adminInput = {
+                    id: this.selectedAdmin.id,
+                    nombres: this.nombres,
+                    apellidos: this.apellidos,
+                    correo: this.correo,
+                    telefono: this.telefono,
+                };
+
+                // Lógica para actualizar administrador en la base de datos...
+                const adminResponse = await fetch("http://localhost:4000/graphql", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        query: `
+                mutation UpdateAdministrator($input: UpdateAdministratorInput) {
+                  updateAdministrator(input: $input) {
+                    id
+                    nombres
+                    apellidos
+                    correo
+                    telefono
+                  }
+                }
+              `,
+                        variables: {
+                            input: adminInput
+                        }
+                    })
+                });
+
+                const updatedAdmin = await adminResponse.json();
+                console.log("Administrador actualizado:", updatedAdmin.data.updateAdministrator);
+
+                // Actualizar lista de administradores después de la actualización
+                this.limpiarCampos();
+                this.actualizarListaAdmins();
+            } catch (error) {
+                console.error("Error al actualizar el administrador:", error);
             }
         },
 
         async actualizarListaAdmins() {
             try {
+                // Lógica para obtener la lista actualizada de administradores...
                 const response = await fetch("http://localhost:4000/graphql", {
                     method: "POST",
                     headers: {
@@ -130,77 +170,31 @@ export default {
         },
 
         seleccionarAdmin(admin) {
-            // Copiar los datos del admin seleccionado a selectedAdmin
-            this.selectedAdmin = { ...admin };
-        },
-
-        async actualizarAdmin() {
-            try {
-                const adminInput = {
-                    id: this.selectedAdmin.id,
-                    nombres: this.selectedAdmin.nombres,
-                    apellidos: this.selectedAdmin.apellidos,
-                    correo: this.selectedAdmin.correo,
-                    telefono: this.selectedAdmin.telefono
-                };
-
-                const adminResponse = await fetch("http://localhost:4000/graphql", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        query: `
-                mutation UpdateAdministrator($input: UpdateAdministratorInput) {
-                  updateAdministrator(input: $input) {
-                    id
-                    nombres
-                    apellidos
-                    correo
-                    telefono
-                  }
-                }
-              `,
-                        variables: {
-                            input: adminInput
-                        }
-                    })
-                });
-
-                const updatedAdmin = await adminResponse.json();
-                console.log("Administrador actualizado:", updatedAdmin.data.updateAdministrator);
-
-                // Actualizar lista de administradores después de la actualización
-                this.actualizarListaAdmins();
-            } catch (error) {
-                console.error("Error al actualizar el administrador:", error);
-            }
+            this.isEdit = true;
+            this.selectedAdmin = admin;
+            this.nombres = admin.nombres;
+            this.apellidos = admin.apellidos;
+            this.correo = admin.correo;
+            this.telefono = admin.telefono;
         },
 
         limpiarCampos() {
-            // Limpiar los campos del administrador seleccionado
-            this.selectedAdmin = {
-                id: null,
-                nombres: "",
-                apellidos: "",
-                correo: "",
-                telefono: ""
-            };
+            this.isEdit = false;
+            this.selectedAdmin = null;
+            this.nombres = "";
+            this.apellidos = "";
+            this.correo = "";
+            this.telefono = "";
         },
 
-        async volver() {
+        volver() {
             console.log("Volviendo...");
-            // Actualizar la lista de administradores al volver
+            // Lógica para volver y actualizar la lista de administradores...
             this.actualizarListaAdmins();
-        }
-    }
+        },
+    },
 };
 </script>
-  
-<style scoped>
-/* Estilos aquí */
-</style>
-  
   
 <style scoped>
 .container {
@@ -214,7 +208,7 @@ export default {
     text-align: center;
 }
 
-form {
+.form {
     display: grid;
     grid-template-columns: 1fr;
     gap: 10px;
@@ -251,8 +245,9 @@ button {
     border: 1px solid #ccc;
     padding: 10px;
     margin-top: 20px;
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
+    overflow: auto;
 }
 
 ul {
@@ -269,6 +264,5 @@ li {
     padding: 8px;
     border-radius: 4px;
     width: 100%;
-    /* Hacer que cada elemento ocupe todo el ancho disponible */
 }
 </style>
