@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './DataValidationForm.css';
 import logo from './logo.svg';
 
@@ -59,7 +60,7 @@ class DataValidationForm extends React.Component {
     }
 
     volver() {
-        this.obtenerLogEntries();
+        // this.obtenerLogEntries();
     }
 
     generateRandomHash() {
@@ -205,9 +206,9 @@ class DataValidationForm extends React.Component {
                         <button type="submit" onClick={() => this.validarDatos()} id="validar-button">
                             Validar
                         </button>
-                        <button type="button" onClick={() => this.volver()} id="volver-button">
-                            Volver
-                        </button>
+                        <Link to="/">
+                            <button id="volver-button">Volver</button>
+                        </Link>
                     </div>
                 </form>
             </div>
