@@ -1,14 +1,14 @@
 import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Webcam from 'react-webcam';
+import logo from './logo.svg';
 import './DataValidationFace.css';
 
 const DataValidationFace = () => {
   const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
   const [cameraActive, setCameraActive] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [showAlertMessage, setShowAlertMessage] = useState(false);
 
   const capture = () => {
     setLoading(true);
@@ -22,14 +22,12 @@ const DataValidationFace = () => {
     } else {
       setLoading(false);
     }
-    setShowAlert(true);
     generateRandomNumber();
   };
 
   const cancelCapture = () => {
     setCapturedImage(null);
     setCameraActive(true);
-    setShowAlert(false);
   };
 
   const saveImage = () => {
@@ -113,12 +111,18 @@ const DataValidationFace = () => {
 
   return (
     <div className="app-container">
+      <img src={logo} className="App-logo" alt="logo" />
       {cameraActive && (
         <div className={`capture-bar ${loading ? 'loading-overlay' : ''}`}>
           <h4 className="font-weight-bold">Autenticación Facial</h4>
-          <button onClick={capture} className="capture-button">
-            <i className="fas fa-camera-retro mr-2"></i>Capturar
-          </button>
+          <div className="button-container">
+            <Link to="/">
+              <button>Volver</button>
+            </Link>
+            <button onClick={capture} className="capture-button" id="volver-button">
+              <i className="fas fa-camera-retro mr-2"></i>Validar
+            </button>
+          </div>
         </div>
       )}
       {cameraActive && (
@@ -140,12 +144,7 @@ const DataValidationFace = () => {
               <button onClick={saveImage} className="save-button">
                 <i className="far fa-save mr-2"></i>Guardar
               </button>
-              {showAlertMessage && (
-                <div className={`alert-container ${showAlertMessage === 'Aceptado' ? 'success' : 'danger'}`}>
-                  {showAlertMessage}
-                </div>
-              )}
-              <button onClick={cancelCapture} className="cancel-button">
+              <button onClick={cancelCapture} >
                 <i className="fas fa-arrow-left mr-2"></i>Cancelar
               </button>
             </div>
