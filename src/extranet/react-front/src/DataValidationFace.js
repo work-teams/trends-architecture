@@ -112,14 +112,14 @@ const DataValidationFace = () => {
   return (
     <div className="app-container">
       <img src={logo} className="App-logo" alt="logo" />
+      <h1 className="font-weight-bold">Autenticación Facial</h1>
       {cameraActive && (
         <div className={`capture-bar ${loading ? 'loading-overlay' : ''}`}>
-          <h4 className="font-weight-bold">Autenticación Facial</h4>
           <div className="button-container">
             <Link to="/">
-              <button>Volver</button>
+              <button className="action-button">Volver</button>
             </Link>
-            <button onClick={capture} className="capture-button" id="volver-button">
+            <button onClick={capture} className="action-button">
               <i className="fas fa-camera-retro mr-2"></i>Validar
             </button>
           </div>
@@ -139,12 +139,12 @@ const DataValidationFace = () => {
       <div className={`image-container ${loading ? 'hidden' : ''}`}>
         {capturedImage && (
           <div className="image-bar">
-            <h4 className="font-weight-bold">Foto capturada</h4>
+            <h2 className="font-weight-bold">Foto capturada</h2>
             <div className="button-container">
-              <button onClick={saveImage} className="save-button">
+              <button onClick={saveImage} className="action-button">
                 <i className="far fa-save mr-2"></i>Guardar
               </button>
-              <button onClick={cancelCapture} >
+              <button onClick={cancelCapture} className="action-button">
                 <i className="fas fa-arrow-left mr-2"></i>Cancelar
               </button>
             </div>

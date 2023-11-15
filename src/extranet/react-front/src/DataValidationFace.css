@@ -3,33 +3,7 @@
     margin: 0 auto;
 }
 
-.capture-bar {
-    width: 100%;
-    margin: 20px 0;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f2f2f2;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-.camera-container {
-    width: 100%;
-    text-align: center;
-}
-
-.webcam {
-    width: 100%;
-    max-height: 300px;
-}
-
-.image-container {
-    text-align: center;
-    position: relative;
-}
-
+.capture-bar,
 .image-bar {
     width: 100%;
     margin: 20px 0;
@@ -42,26 +16,33 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.image-bar h4 {
-    margin: 0;
-}
-
 .button-container {
-    text-align: center;
+    text-align: left;
+    /* Alinea los botones a la izquierda */
 }
 
-.save-button,
-.cancel-button {
+.action-button {
     background-color: #007bff;
     color: #fff;
     border: none;
     padding: 10px;
     cursor: pointer;
+    margin-right: 10px;
+    /* Espaciado entre los botones */
 }
 
-.save-button:hover,
-.cancel-button:hover {
+.action-button:hover {
     background-color: #0056b3;
+}
+
+.image-container {
+    text-align: center;
+    position: relative;
+}
+
+.webcam {
+    width: 100%;
+    max-height: 300px;
 }
 
 .alert-container {
@@ -93,14 +74,3 @@
     justify-content: center;
     align-items: center;
 }
-
-.App-logo {
-    height: 20vmin;
-    pointer-events: none;
-  }
-  
-  @media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-      animation: App-logo-spin infinite 20s linear;
-    }
-  }
