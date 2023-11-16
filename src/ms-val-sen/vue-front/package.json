@@ -10,7 +10,9 @@
   "dependencies": {
     "@vue/cli": "^5.0.8",
     "core-js": "^3.8.3",
-    "vue": "^3.2.13"
+    "express": "^4.18.2",
+    "vue": "^3.2.13",
+    "xpress": "^2.4.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

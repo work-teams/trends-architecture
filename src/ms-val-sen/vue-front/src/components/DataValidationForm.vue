@@ -1,40 +1,43 @@
 <template>
-  <div>
-    <h1>Formulario de Validación de Datos Personales</h1>
-    <form @submit.prevent="validarDatos" id="data-validation-form">
-      <div class="form-group">
-        <label for="nombres">Nombres:</label>
-        <input v-model="nombres" type="text" id="nombres" name="nombres" required />
+  <div class="container-form d-flex justify-content-center container my-4 shadow p-3 mb-5 bg-white rounded">
+    <form @submit.prevent="registrarEventoVD" id="data-validation-form" class="w-100 p-4">
+      <div class="mb-3">
+        <label for="nombres" class="form-label">Nombres:</label>
+        <input v-model="nombres" @input="validarTexto($event, 'nombres')" type="text" class="form-control form-control-sm" id="nombres" name="nombres" required />
       </div>
-      <div class="form-group">
-        <label for="apellido-paterno">Apellido Paterno:</label>
-        <input v-model="apellidoPaterno" type="text" id="apellido-paterno" name="apellido-paterno" required />
+      <div class="mb-3">
+        <label for="apellido-paterno" class="form-label">Apellido Paterno:</label>
+        <input v-model="apellidoPaterno" @input="validarTexto($event, 'apellidoPaterno')" type="text" class="form-control form-control-sm" id="apellido-paterno" name="apellido-paterno" required />
       </div>
-      <div class="form-group">
-        <label for="apellido-materno">Apellido Materno:</label>
-        <input v-model="apellidoMaterno" type="text" id="apellido-materno" name="apellido-materno" required />
+      <div class="mb-3">
+        <label for="apellido-materno" class="form-label">Apellido Materno:</label>
+        <input v-model="apellidoMaterno" @input="validarTexto($event, 'apellidoMaterno')" type="text" class="form-control form-control-sm" id="apellido-materno" name="apellido-materno" required />
       </div>
-      <div class="form-group">
-        <label for="dni">DNI:</label>
-        <input v-model="dni" type="text" id="dni" name="dni" required />
+      <div class="mb-3">
+        <label for="dni" class="form-label">DNI:</label>
+        <input v-model="dni" @input="validarNumero($event, 'dni')" type="text" class="form-control form-control-sm" pattern="[0-9]{8}" inputmode="numeric" id="dni" name="dni" maxlength="8" required />
       </div>
-      <div class="form-group">
-        <label for="edad">Edad:</label>
-        <input v-model="edad" type="number" id="edad" name="edad" required />
+      <div class="mb-3">
+        <label for="edad" class="form-label">Edad:</label>
+        <input v-model="edad" type="number" class="form-control form-control-sm" id="edad" name="edad"  min="18" max="99" required />
       </div>
-      <div class="form-group">
-        <label for="fecha-nacimiento">Fecha de Nacimiento:</label>
-        <input v-model="fechaNacimiento" type="date" id="fecha-nacimiento" name="fecha-nacimiento" required />
+      <div class="mb-3">
+        <label for="fecha-nacimiento" class="form-label">Fecha de Nacimiento:</label>
+        <input v-model="fechaNacimiento" @blur="validarEdadFecha" type="date" class="form-control form-control-sm" id="fecha-nacimiento" name="fecha-nacimiento" required />
       </div>
-      <div class="form-group">
-        <button type="submit" id="validar-button">Validar</button>
-        <button type="button" @click="volver" id="volver-button">Volver</button>
+      <div class="d-flex justify-content-around mt-5">
+        <button class="btn btn-success px-4" type="submit" id="validar-button"><i class="fa-regular fa-circle-check mr-2"></i>Validar</button>
+        <button class="btn btn-dark px-4" type="button" @click="volver" id="volver-button"><i class="fa-solid fa-arrow-left mr-2"></i>Volver</button>
       </div>
     </form>
   </div>
 </template>
-  
+
 <script>
+import RegistroEventos from './assets/js/registroEventos.js';
+
+const registroEventos = new RegistroEventos();
+
 export default {
   data() {
     return {
@@ -46,52 +49,51 @@ export default {
       fechaNacimiento: ''
     };
   },
+
   methods: {
-    async validarDatos() {
-      try {
-        const respuesta = this.generateRandomHash();
-        const fecha = this.generateCurrentDate();
-        const hora = this.generateCurrentTime();
+    validarTexto(event, campo) {
+      // Verificar si se presionó la tecla de retroceso o borrar
+      const esTeclaBorrar = event.inputType === 'deleteContentBackward' || event.code === 'Backspace';
 
-        const logEntryInput = {
-          respuesta,
-          fecha,
-          hora,
-        };
+      // Expresión regular para permitir solo letras y espacios
+      const regex = /^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$/;
 
-        const logResponse = await fetch("http://localhost:4000/graphql", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query: `
-                mutation AddLogEntry($input: LogEntryInput) {
-                  addLogEntry(input: $input) {
-                    id
-                    respuesta
-                    fecha
-                    hora
-                  }
-                }
-              `,
-            variables: {
-              input: logEntryInput,
-            },
-          }),
-        });
-
-        const logData = await logResponse.json();
-        console.log(this.generateMensaje());
-        console.log("Registro de log insertado:", logData.data.addLogEntry);
-        this.limpiarFormulario()
-      } catch (error) {
-        console.error("Error al insertar el registro de log:", error);
+      if (!esTeclaBorrar && !regex.test(event.target.value)) {
+        this[campo] = event.target.value.slice(0, -1);
+        alert('Este campo solo admite texto');
       }
     },
 
-    async volver() {
-      await this.obtenerLogEntries();
+    validarNumero(event, campo) {
+      // Verificar si se presionó la tecla de retroceso o borrar
+      const esTeclaBorrar = event.inputType === 'deleteContentBackward' || event.code === 'Backspace';
+
+      // Expresión regular para permitir solo letras y espacios
+      const regex = /^[0-9]+$/;
+
+      if (!esTeclaBorrar && !regex.test(event.target.value)) {
+        this[campo] = event.target.value.slice(0, -1);
+        alert('Este campo solo adminte numero');
+      }
+    },
+
+    validarEdadFecha() {
+      const fechaIngresada = new Date(this.fechaNacimiento);
+      const ahora = new Date();
+      let edad = ahora.getFullYear() - fechaIngresada.getFullYear();
+
+      // Verificar si aún no se ha cumplido el aniversario de este año
+      if (
+        fechaIngresada.getMonth() > ahora.getMonth() ||
+        (fechaIngresada.getMonth() === ahora.getMonth() && fechaIngresada.getDate() > ahora.getDate())
+      ) {
+        edad--;
+      }
+
+      if (edad !== parseInt(this.edad, 10)) {
+        alert('La edad no coincide con la fecha de nacimiento.');
+        this.fechaNacimiento = ''; // Limpiar campo fecha de nacimiento
+      }
     },
 
     generateRandomHash() {
@@ -129,95 +131,22 @@ export default {
       this.fechaNacimiento = '';
     },
 
-    async obtenerLogEntries() {
+    async registrarEventoVD() {
       try {
-        const response = await fetch("http://localhost:4000/graphql", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query: `
-                query GetLogEntries {
-                  logEntries {
-                    id
-                    respuesta
-                    fecha
-                    hora
-                  }
-                }
-              `,
-          }),
-        });
+        const respuesta = this.generateRandomHash();
+        const fecha = this.generateCurrentDate();
+        const hora = this.generateCurrentTime();
 
-        const data = await response.json();
-        const logEntries = data.data.logEntries;
-        console.log("Registros de log:");
-        console.log(logEntries);
+        await registroEventos.registrarEvento(respuesta, fecha, hora);
+        this.limpiarFormulario();
       } catch (error) {
-        console.error("Error al obtener los registros de log:", error);
+        console.error("Error al enviar respuesta", error);
       }
+    },
+
+    async volver() {
+      await registroEventos.obtenerLogEntries();
     },
   },
 };
 </script>
-  
-<style scoped>
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: #f2f2f2;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-}
-
-form {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 400px;
-}
-
-.form-group {
-  margin: 10px 0;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-button {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-#validar-button {
-  background-color: #4CAF50;
-}
-
-#volver-button {
-  background-color: #FF5722;
-}
-</style>
-  

@@ -1,5 +1,8 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <div class="d-flex justify-content-center align-items-center bg-dark text-white">
+    <img class="mx-4" alt="Vue logo" src="../public/logo/logo.png" width="75" height="75">
+    <h2 class="p-3">Formulario de Validación de Datos Personales</h2>
+  </div>
   <DataValidationForm />
 </template>
 
@@ -15,12 +18,5 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import '../src/components/assets/css/styles.css';
 </style>
