@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const firebaseConfig = require("../../../../firebase.json");
+const firebaseConfig = require("../firebase.json");
 
 // Configura Firebase
 admin.initializeApp({
