@@ -133,12 +133,10 @@ class DataValidationForm extends React.Component {
     render() {
         return (
             <div>
-                <div class="d-flex justify-content-center align-items-center bg-dark text-white">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1>Formulario de Validación de Datos Personales</h1>
-                </div>
+                <img src={logo} className="App-logo" alt="logo" />
+                <h1>Formulario de Validación de Datos Personales</h1>
                 <form onSubmit={(e) => e.preventDefault()} id="data-validation-form">
-                    <div className="form-label">
+                    <div className="form-group">
                         <label htmlFor="nombres">Nombres:</label>
                         <input
                             value={this.state.nombres}
@@ -149,7 +147,7 @@ class DataValidationForm extends React.Component {
                             required
                         />
                     </div>
-                    <div className="form-label">
+                    <div className="form-group">
                         <label htmlFor="apellido-paterno">Apellido Paterno:</label>
                         <input
                             value={this.state.apellidoPaterno}
@@ -160,7 +158,7 @@ class DataValidationForm extends React.Component {
                             required
                         />
                     </div>
-                    <div className="form-label">
+                    <div className="form-group">
                         <label htmlFor="apellido-materno">Apellido Materno:</label>
                         <input
                             value={this.state.apellidoMaterno}
@@ -171,7 +169,7 @@ class DataValidationForm extends React.Component {
                             required
                         />
                     </div>
-                    <div className="form-label">
+                    <div className="form-group">
                         <label htmlFor="dni">DNI:</label>
                         <input
                             value={this.state.dni}
@@ -182,7 +180,7 @@ class DataValidationForm extends React.Component {
                             required
                         />
                     </div>
-                    <div className="form-label">
+                    <div className="form-group">
                         <label htmlFor="edad">Edad:</label>
                         <input
                             value={this.state.edad}
@@ -193,7 +191,7 @@ class DataValidationForm extends React.Component {
                             required
                         />
                     </div>
-                    <div className="form-label">
+                    <div className="form-group">
                         <label htmlFor="fecha-nacimiento">Fecha de Nacimiento:</label>
                         <input
                             value={this.state.fechaNacimiento}
@@ -204,7 +202,7 @@ class DataValidationForm extends React.Component {
                             required
                         />
                     </div>
-                    <div className="form-label">
+                    <div className="form-group">
                         <button type="submit" onClick={() => this.validarDatos()} id="validar-button">
                             Validar
                         </button>
