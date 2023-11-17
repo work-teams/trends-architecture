@@ -53,7 +53,7 @@ const DataValidationFace = () => {
         hora,
       };
 
-      const logResponse = await fetch('http://localhost:4000/graphql', {
+      const logResponse = await fetch('https://msvalfac.onrender.com/graphql', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
