@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD:src/extranet/react-front/src/DataValidationForm.js
 import { generateRandomHash, generateCurrentDate, generateCurrentTime, generateMensaje } from '../components/js/logValidation';
+=======
+import { addLogEntry } from '../services/logService';
+>>>>>>> 5a2c379f219d882755dd43c028841dc76d1d9a47:src/extranet/react-front/src/components/DataValidationForm.js
 import './DataValidationForm.css';
 import logo from './logo.svg';
 
@@ -17,6 +21,68 @@ class DataValidationForm extends React.Component {
         };
     }
 
+<<<<<<< HEAD:src/extranet/react-front/src/DataValidationForm.js
+=======
+    async validarDatos() {
+        try {
+            const respuesta = this.generateRandomHash();
+            const fecha = this.generateCurrentDate();
+            const hora = this.generateCurrentTime();
+
+            const logEntryInput = {
+                respuesta,
+                fecha,
+                hora,
+            };
+
+            const logData = await addLogEntry(logEntryInput)
+
+            console.log(this.generateMensaje());
+            console.log('Registro de log insertado:', logData.data.addLogEntry);
+            this.limpiarFormulario();
+        } catch (error) {
+            console.error('Error al insertar el registro de log:', error);
+        }
+    }
+
+    generateRandomHash() {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+
+    generateCurrentDate() {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = currentDate.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    generateCurrentTime() {
+        const currentDate = new Date();
+        const hours = currentDate.getHours().toString().padStart(2, '0');
+        const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+        const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+    generateMensaje() {
+        const numeroAleatorio = Math.floor(Math.random() * 100);
+        const esPar = numeroAleatorio % 2 === 0;
+        return esPar ? 'Se validó correctamente' : 'Se validó incorrectamente';
+    }
+
+    limpiarFormulario() {
+        this.setState({
+            nombres: '',
+            apellidoPaterno: '',
+            apellidoMaterno: '',
+            dni: '',
+            edad: '',
+            fechaNacimiento: '',
+        });
+    }
+
+>>>>>>> 5a2c379f219d882755dd43c028841dc76d1d9a47:src/extranet/react-front/src/components/DataValidationForm.js
     render() {
         return (
             <div>
