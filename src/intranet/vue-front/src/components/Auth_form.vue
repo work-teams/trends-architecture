@@ -39,8 +39,12 @@ export default {
           },
           body: JSON.stringify({
             query: `
-              mutation Login($username: String!, $password: String!) {
-                login(username: $username, password: $password)
+              query Login($username: String!, $password: String!) {
+                login(username: $username, password: $password) {
+                  id
+                  nombre
+                  apellido
+                }
               }
             `,
             variables: {
@@ -50,11 +54,22 @@ export default {
           }),
         });
 
+        if (!response.ok) {
+          console.error("Error en la solicitud:", response.statusText);
+          return;
+        }
+
         const data = await response.json();
-        
-        if (data.data.login) {
-          // Autenticación exitosa, puedes redirigir o realizar otras acciones
-          console.log("Autenticación exitosa");
+
+        if (data.errors) {
+          console.error("Errores en la respuesta GraphQL:", data.errors);
+          return;
+        }
+
+        if (data.data && data.data.login) {
+          // Autenticación exitosa, puedes acceder a las propiedades del objeto Admin
+          const admin = data.data.login;
+          console.log("Autenticación exitosa, ID:", admin.id, "Nombre:", admin.nombre, "Apellido:", admin.apellido);
         } else {
           // Autenticación fallida, puedes mostrar un mensaje de error
           console.error("Autenticación fallida");
@@ -71,8 +86,8 @@ export default {
     },
 
     limpiarFormulario() {
-      this.username = '';
-      this.password = '';
+      this.username = "";
+      this.password = "";
     },
   },
 };
