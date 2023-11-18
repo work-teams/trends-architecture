@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { addLogEntry } from '../services/logService';
 import './DataValidationForm.css';
 import logo from './logo.svg';
 
@@ -28,39 +29,14 @@ class DataValidationForm extends React.Component {
                 hora,
             };
 
-            const logResponse = await fetch('http://localhost:4000/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    query: `
-            mutation AddLogEntry($input: LogEntryInput) {
-              addLogEntry(input: $input) {
-                id
-                respuesta
-                fecha
-                hora
-              }
-            }
-          `,
-                    variables: {
-                        input: logEntryInput,
-                    },
-                }),
-            });
+            const logData = await addLogEntry(logEntryInput)
 
-            const logData = await logResponse.json();
             console.log(this.generateMensaje());
             console.log('Registro de log insertado:', logData.data.addLogEntry);
             this.limpiarFormulario();
         } catch (error) {
             console.error('Error al insertar el registro de log:', error);
         }
-    }
-
-    volver() {
-        // this.obtenerLogEntries();
     }
 
     generateRandomHash() {
@@ -98,36 +74,6 @@ class DataValidationForm extends React.Component {
             edad: '',
             fechaNacimiento: '',
         });
-    }
-
-    async obtenerLogEntries() {
-        try {
-            const response = await fetch('http://localhost:4000/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    query: `
-            query GetLogEntries {
-              logEntries {
-                id
-                respuesta
-                fecha
-                hora
-              }
-            }
-          `,
-                }),
-            });
-
-            const data = await response.json();
-            const logEntries = data.data.logEntries;
-            console.log('Registros de log:');
-            console.log(logEntries);
-        } catch (error) {
-            console.error('Error al obtener los registros de log:', error);
-        }
     }
 
     render() {
