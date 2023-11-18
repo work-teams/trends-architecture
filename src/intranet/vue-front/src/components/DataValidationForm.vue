@@ -49,8 +49,8 @@ export default {
   methods: {
     async validarDatos() {
       try {
-        const respuesta = this.generateRandomHash();
-        const fecha = this.generateCurrentDate();
+        const respuesta = this.generateRandomHash();  // nombre
+        const fecha = this.generateCurrentDate();     // apellido 
         const hora = this.generateCurrentTime();
 
         const logEntryInput = {

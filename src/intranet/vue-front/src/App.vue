@@ -1,18 +1,18 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <!-- <DataValidationForm /> -->
-  <AdminForm />
+  <AuthForm/>
 </template>
 
 <script>
 // import DataValidationForm from './components/DataValidationForm.vue';
-import AdminForm from './components/AdminForm.vue';
+import AuthForm  from './components/Auth_form.vue';
 
 export default {
   name: 'App',
   components: {
     // DataValidationForm
-    AdminForm
+    AuthForm 
   }
 }
 </script>

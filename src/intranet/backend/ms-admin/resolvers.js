@@ -33,7 +33,7 @@ const resolvers = {
             return logEntries;
         },
 
-        administrators: async () => {
+        administrators: async () => {   // <--
             const db = admin.database();
             const ref = db.ref("administrators"); // Ajusta el nombre de la referencia según tu estructura de datos
             const snapshot = await ref.once("value");
