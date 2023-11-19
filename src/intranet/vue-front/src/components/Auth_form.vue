@@ -39,17 +39,19 @@ export default {
           },
           body: JSON.stringify({
             query: `
-              query Login($username: String!, $password: String!) {
-                login(username: $username, password: $password) {
+              query Login($credentials: AdministratorInput!) {
+                Login(credentials: $credentials) {
                   id
-                  nombre
-                  apellido
+                  nombres
+                  apellidos
                 }
               }
             `,
             variables: {
-              username: this.username,
-              password: this.password,
+              credentials: {
+                nombres: this.username,
+                apellidos: this.password,
+              },
             },
           }),
         });
@@ -66,10 +68,10 @@ export default {
           return;
         }
 
-        if (data.data && data.data.login) {
-          // Autenticación exitosa, puedes acceder a las propiedades del objeto Admin
-          const admin = data.data.login;
-          console.log("Autenticación exitosa, ID:", admin.id, "Nombre:", admin.nombre, "Apellido:", admin.apellido);
+        if (data.data && data.data.Login) {
+          // Autenticación exitosa, puedes acceder a las propiedades del objeto Administrator
+          const admin = data.data.Login;
+          console.log("Autenticación exitosa, ID:", admin.id, "Nombres:", admin.nombres, "Apellidos:", admin.apellidos);
         } else {
           // Autenticación fallida, puedes mostrar un mensaje de error
           console.error("Autenticación fallida");
@@ -104,11 +106,11 @@ export default {
       border: 1px solid #ccc;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       margin: 20px auto;
-      padding: 20px;
+      padding: 40px;
     }
     
     .form-group {
-      margin: 10px 0;
+      margin: 50px 0;
     }
     
     label {
@@ -131,6 +133,7 @@ export default {
       border-radius: 5px;
       cursor: pointer;
       margin-right: 10px;
+      margin-top: 30px;
     }
     
     #login-button {
