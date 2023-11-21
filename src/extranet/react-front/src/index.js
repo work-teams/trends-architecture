@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import WelcomeView from './WelcomeView';
-import DataValidationForm from './DataValidationForm';
-import reportWebVitals from './reportWebVitals';
-import DataValidationFace from './DataValidationFace';
+import './assets/css/index.css';
+import WelcomeView from './views/WelcomeView';
+import DataValidationForm from './views/DataValidationForm';
+import reportWebVitals from './components/reportWebVitals';
+import DataValidationFace from './views/DataValidationFace';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

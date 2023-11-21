@@ -1,14 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Webcam from 'react-webcam';
-import logo from './logo.svg';
-import './DataValidationFace.css';
+import logo from '../assets/logo/logo.svg';
+import '../assets/css/DataValidationFace.css';
+import RegistroEventos from '../components/registroEventos.js';
 
 const DataValidationFace = () => {
   const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraActive, setCameraActive] = useState(true);
   const [loading, setLoading] = useState(false);
+  const registroEventos = new RegistroEventos();
 
   const capture = () => {
     setLoading(true);
@@ -47,39 +49,10 @@ const DataValidationFace = () => {
       const fecha = generateCurrentDate();
       const hora = generateCurrentTime();
 
-      const logEntryInput = {
-        respuesta,
-        fecha,
-        hora,
-      };
-
-      const logResponse = await fetch('https://msvalfac.onrender.com/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: `
-            mutation AddLogEntry($input: LogEntryInput) {
-              addLogEntry(input: $input) {
-                id
-                respuesta
-                fecha
-                hora
-              }
-            }
-          `,
-          variables: {
-            input: logEntryInput,
-          },
-        }),
-      });
-
-      const logData = await logResponse.json();
+      await registroEventos.registrarEventoData(respuesta, fecha, hora);
       console.log(generateMensaje());
-      console.log('Registro de log insertado:', logData.data.addLogEntry);
-    } catch (error) {
-      console.error('Error al insertar el registro de log:', error);
+    } catch (error){
+      console.error("Error al enviar respuesta", error);
     }
   };
 

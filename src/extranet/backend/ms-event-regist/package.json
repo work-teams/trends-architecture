@@ -1,0 +1,39 @@
+{
+  "name": "trends-architecture",
+  "version": "1.0.0",
+  "description": "Trends Architecture Project",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/work-teams/trends-architecture.git"
+  },
+  "keywords": [
+    "identify",
+    "validation"
+  ],
+  "author": "Grup 1",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/work-teams/trends-architecture/issues"
+  },
+  "homepage": "https://github.com/work-teams/trends-architecture#readme",
+  "dependencies": {
+    "@apollo/server": "^4.9.5",
+    "apollo-server": "^3.12.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "firebase": "^10.5.2",
+    "firebase-admin": "^11.11.0",
+    "graphql": "^16.8.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1"
+  }
+}

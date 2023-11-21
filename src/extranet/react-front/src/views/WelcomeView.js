@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './WelcomeView.css';
-import logo from './logo.svg';
+import '../assets/css/WelcomeView.css';
+import logo from '../assets/logo/logo.svg';
 
 class WelcomeView extends React.Component {
     render() {
