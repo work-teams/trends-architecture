@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './DataValidationForm.css';
-import logo from './logo.svg';
+import '../assets/css/DataValidationForm.css';
+import logo from '../assets/logo/logo.svg';
+import RegistroEventos from '../components/registroEventos.js';
+
+const registroEventos = new RegistroEventos();
 
 class DataValidationForm extends React.Component {
     constructor(props) {
@@ -16,51 +19,22 @@ class DataValidationForm extends React.Component {
         };
     }
 
-    async validarDatos() {
+    async registrarEventoVD() {
         try {
-            const respuesta = this.generateRandomHash();
-            const fecha = this.generateCurrentDate();
-            const hora = this.generateCurrentTime();
-
-            const logEntryInput = {
-                respuesta,
-                fecha,
-                hora,
-            };
-
-            const logResponse = await fetch('https://msbacksen.onrender.com/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    query: `
-            mutation AddLogEntry($input: LogEntryInput) {
-              addLogEntry(input: $input) {
-                id
-                respuesta
-                fecha
-                hora
-              }
-            }
-          `,
-                    variables: {
-                        input: logEntryInput,
-                    },
-                }),
-            });
-
-            const logData = await logResponse.json();
-            console.log(this.generateMensaje());
-            console.log('Registro de log insertado:', logData.data.addLogEntry);
-            this.limpiarFormulario();
+          const respuesta = this.generateRandomHash();
+          const fecha = this.generateCurrentDate();
+          const hora = this.generateCurrentTime();
+  
+          await registroEventos.registrarEventoData(respuesta, fecha, hora);
+          console.log(this.generateMensaje());
+          this.limpiarFormulario();
         } catch (error) {
-            console.error('Error al insertar el registro de log:', error);
+          console.error("Error al enviar respuesta", error);
         }
     }
 
-    volver() {
-        // this.obtenerLogEntries();
+    async volver() {
+        //await registroEventos.obtenerLogEntries();
     }
 
     generateRandomHash() {
@@ -100,35 +74,51 @@ class DataValidationForm extends React.Component {
         });
     }
 
-    async obtenerLogEntries() {
-        try {
-            const response = await fetch('https://msbacksen.onrender.com/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    query: `
-            query GetLogEntries {
-              logEntries {
-                id
-                respuesta
-                fecha
-                hora
-              }
-            }
-          `,
-                }),
-            });
-
-            const data = await response.json();
-            const logEntries = data.data.logEntries;
-            console.log('Registros de log:');
-            console.log(logEntries);
-        } catch (error) {
-            console.error('Error al obtener los registros de log:', error);
+    validarTexto(event, campo) {
+        // Verificar si se presionó la tecla de retroceso o borrar
+        const esTeclaBorrar = event.inputType === 'deleteContentBackward' || event.code === 'Backspace';
+    
+        // Expresión regular para permitir solo letras y espacios
+        const regex = /^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$/;
+    
+        if (!esTeclaBorrar && !regex.test(event.target.value)) {
+            const newValue = event.target.value.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ\s]+/g, ''); // Remover caracteres no válidos
+            this.setState({ [campo]: newValue }); // Actualizar el estado con el nuevo valor
+            alert('Este campo solo admite texto');
         }
     }
+  
+    validarNumero(event, campo) {
+        // Verificar si se presionó la tecla de retroceso o borrar
+        const esTeclaBorrar = event.inputType === 'deleteContentBackward' || event.code === 'Backspace';
+  
+        // Expresión regular para permitir solo letras y espacios
+        const regex = /^[0-9]+$/;
+  
+        if (!esTeclaBorrar && !regex.test(event.target.value)) {
+          this[campo] = event.target.value.slice(0, -1);
+          alert('Este campo solo adminte numero');
+        }
+    }
+  
+    validarEdadFecha() {
+        const fechaIngresada = new Date(this.state.fechaNacimiento);
+        const ahora = new Date();
+        let edad = ahora.getFullYear() - fechaIngresada.getFullYear();
+    
+        // Verificar si aún no se ha cumplido el aniversario de este año
+        if (
+            fechaIngresada.getMonth() > ahora.getMonth() ||
+            (fechaIngresada.getMonth() === ahora.getMonth() && fechaIngresada.getDate() > ahora.getDate())
+        ) {
+            edad--;
+        }
+    
+        if (edad !== parseInt(this.state.edad, 10)) {
+            alert('La edad no coincide con la fecha de nacimiento.');
+            this.setState({ fechaNacimiento: '' }); // Limpiar campo fecha de nacimiento en el estado
+        }
+    } 
 
     render() {
         return (
@@ -140,7 +130,10 @@ class DataValidationForm extends React.Component {
                         <label htmlFor="nombres">Nombres:</label>
                         <input
                             value={this.state.nombres}
-                            onChange={(e) => this.setState({ nombres: e.target.value })}
+                            onChange={(e) => {
+                                this.validarTexto(e, 'nombres'); // Llama a la función validarTexto
+                                this.setState({ nombres: e.target.value }); // Actualiza el estado con el valor del input
+                            }}
                             type="text"
                             id="nombres"
                             name="nombres"
@@ -151,7 +144,10 @@ class DataValidationForm extends React.Component {
                         <label htmlFor="apellido-paterno">Apellido Paterno:</label>
                         <input
                             value={this.state.apellidoPaterno}
-                            onChange={(e) => this.setState({ apellidoPaterno: e.target.value })}
+                            onChange={(e) => {
+                                this.validarTexto(e, 'apellido-paterno'); // Llama a la función validarTexto
+                                this.setState({ apellidoPaterno: e.target.value }); // Actualiza el estado con el valor del input
+                            }}
                             type="text"
                             id="apellido-paterno"
                             name="apellido-paterno"
@@ -162,7 +158,10 @@ class DataValidationForm extends React.Component {
                         <label htmlFor="apellido-materno">Apellido Materno:</label>
                         <input
                             value={this.state.apellidoMaterno}
-                            onChange={(e) => this.setState({ apellidoMaterno: e.target.value })}
+                            onChange={(e) => {
+                                this.validarTexto(e, 'apellido-materno'); // Llama a la función validarTexto
+                                this.setState({ apellidoMaterno: e.target.value }); // Actualiza el estado con el valor del input
+                            }}
                             type="text"
                             id="apellido-materno"
                             name="apellido-materno"
@@ -173,10 +172,16 @@ class DataValidationForm extends React.Component {
                         <label htmlFor="dni">DNI:</label>
                         <input
                             value={this.state.dni}
-                            onChange={(e) => this.setState({ dni: e.target.value })}
+                            onChange={(e) => {
+                                this.validarNumero(e, 'dni'); // Llama a la función validarTexto
+                                this.setState({ dni: e.target.value }); // Actualiza el estado con el valor del input
+                            }}
                             type="text"
                             id="dni"
                             name="dni"
+                            pattern="[0-9]{8}"
+                            inputMode="numeric"
+                            maxLength={8}
                             required
                         />
                     </div>
@@ -188,6 +193,8 @@ class DataValidationForm extends React.Component {
                             type="number"
                             id="edad"
                             name="edad"
+                            min="18"
+                            max="99"
                             required
                         />
                     </div>
@@ -196,6 +203,7 @@ class DataValidationForm extends React.Component {
                         <input
                             value={this.state.fechaNacimiento}
                             onChange={(e) => this.setState({ fechaNacimiento: e.target.value })}
+                            onBlur={(e) => this.validarEdadFecha(e, 'fecha-nacimiento')} // Llama a la función validarFechaEdad al perder el foco
                             type="date"
                             id="fecha-nacimiento"
                             name="fecha-nacimiento"
@@ -203,7 +211,7 @@ class DataValidationForm extends React.Component {
                         />
                     </div>
                     <div className="form-group">
-                        <button type="submit" onClick={() => this.validarDatos()} id="validar-button">
+                        <button type="submit" onClick={() => this.registrarEventoVD()} id="validar-button">
                             Validar
                         </button>
                         <Link to="/">
