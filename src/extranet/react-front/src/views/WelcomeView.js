@@ -13,10 +13,10 @@ class WelcomeView extends React.Component {
 
                 <div className="button-container">
                     <Link to="/data-validation-form">
-                        <button className="validation-button"><i class="fa-solid fa-address-card mr-2"></i>Validación de Datos Sensibles</button>
+                        <button className="validation-button">Validación de Datos Sensibles</button>
                     </Link>
                     <Link to="/data-validation-face">
-                    <button className="validation-button"><i class="fa-solid fa-face-laugh-beam mr-2"></i>Validación Facial</button>
+                        <button className="validation-button">Validación Facial</button>
                     </Link>
                 </div>
             </div>
