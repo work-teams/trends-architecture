@@ -31,7 +31,7 @@ export const generateMensaje = () => {
             icon: 'success',
             title: mensaje,
             showConfirmButton: false,
-            timer: 1500 // Mostrar alerta por 1.5 segundos
+            timer: 2500
         });
     } else {
         Swal.fire({
@@ -42,5 +42,3 @@ export const generateMensaje = () => {
 
     return mensaje;
 };
-
-export default generateMensaje;

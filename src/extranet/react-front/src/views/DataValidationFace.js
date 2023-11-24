@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import Webcam from 'react-webcam';
 import logo from '../assets/logo/logo.svg';
 import '../assets/css/DataValidationFace.css';
-import RegistroEventos from '../components/registroEventos.js';
 import { generateRandomHash, generateCurrentDate, generateCurrentTime, generateMensaje } from '../components/apiReniec.js';
+import RegistroEventos from '../components/registroEventos.js';
 
 const DataValidationFace = () => {
   const webcamRef = useRef(null);
