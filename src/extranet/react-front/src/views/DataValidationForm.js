@@ -2,11 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/css/DataValidationForm.css';
 import logo from '../assets/logo/logo.svg';
-import { generateRandomHash,
-    generateCurrentDate,
-    generateCurrentTime,
-    generateMensaje
-} from '../components/apiReniec.js';
+import { generateRandomHash, generateCurrentDate, generateCurrentTime, generateMensaje } from '../components/apiReniec.js';
 import RegistroEventos from '../components/registroEventos.js';
 
 const registroEventos = new RegistroEventos();
