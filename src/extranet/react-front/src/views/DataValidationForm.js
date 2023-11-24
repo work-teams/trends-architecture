@@ -22,9 +22,9 @@ class DataValidationForm extends React.Component {
 
     async registrarEventoVD() {
         try {
-            const respuesta = generateRandomHash(); // Utiliza la función importada
-            const fecha = generateCurrentDate(); // Utiliza la función importada
-            const hora = generateCurrentTime(); // Utiliza la función importada
+            const respuesta = generateRandomHash();
+            const fecha = generateCurrentDate();
+            const hora = generateCurrentTime();
 
             await registroEventos.registrarEventoData(respuesta, fecha, hora);
             console.log(generateMensaje());
@@ -187,7 +187,7 @@ class DataValidationForm extends React.Component {
                     </div>
                     <div className="form-group mt-4">
                         <button type="submit" onClick={() => this.registrarEventoVD()} id="validar-button" className='btn btn-success'>
-                        <i class="fa-regular fa-circle-check mr-2"></i>Validar
+                            <i class="fa-regular fa-circle-check mr-2"></i>Validar
                         </button>
                         <Link to="/">
                             <button id="volver-button" className='btn btn-danger'>
