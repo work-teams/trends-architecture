@@ -47,6 +47,14 @@ button {
   margin-right: 10px;
 }
 
+#validar-button {
+  background-color: #4CAF50;
+}
+
+#volver-button {
+  background-color: #FF5722;
+}
+
 .App-logo {
   height: 20vmin;
   pointer-events: none;
