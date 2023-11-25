@@ -46,17 +46,6 @@ function generateMensaje() {
     return esPar ? 'Se validó correctamente' : 'Se validó incorrectamente';
 }
 
-function limpiarFormulario() {
-    this.setState({
-        nombres: '',
-        apellidoPaterno: '',
-        apellidoMaterno: '',
-        dni: '',
-        edad: '',
-        fechaNacimiento: '',
-    });
-}
-
 export {
     validarDatos,
     generateRandomHash,

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { addLogEntry } from '../services/logService';
 import './DataValidationForm.css';
 import logo from './logo.svg';
 
@@ -90,7 +89,7 @@ class DataValidationForm extends React.Component {
                         />
                     </div>
                     <div className="form-group">
-                        <button type="submit" onClick={() => this.validarDatos()} id="validar-button">
+                        <button type="submit" onClick={() => this.validarDatosForm(constructor)} id="validar-button">
                             Validar
                         </button>
                         <Link to="/">

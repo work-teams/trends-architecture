@@ -1,6 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Webcam from 'react-webcam';
 
 const webcamRef = useRef(null);
 const [capturedImage, setCapturedImage] = useState(null);
@@ -19,7 +17,6 @@ const capture = () => {
   } else {
     setLoading(false);
   }
-  generateRandomNumber();
 };
 
 const cancelCapture = () => {
