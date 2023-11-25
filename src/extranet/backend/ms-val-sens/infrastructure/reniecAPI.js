@@ -1,25 +1,4 @@
-async function validarDatos() {
-    try {
-        const respuesta = this.generateRandomHash();
-        const fecha = this.generateCurrentDate();
-        const hora = this.generateCurrentTime();
-
-        const logEntryInput = {
-            respuesta,
-            fecha,
-            hora,
-        };
-
-        const logData = await addLogEntry(logEntryInput)
-
-        console.log(this.generateMensaje());
-        console.log('Registro de log insertado:', logData.data.addLogEntry);
-        this.limpiarFormulario();
-    } catch (error) {
-        console.error('Error al insertar el registro de log:', error);
-    }
-}
-
+// reniecAPI.js
 function generateRandomHash() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
