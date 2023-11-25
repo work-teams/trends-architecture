@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import Webcam from 'react-webcam';
 import logo from '../assets/logo/logo.svg';
 import '../assets/css/DataValidationFace.css';
-import { generateRandomHash, generateCurrentDate, generateCurrentTime, generateMensaje } from '../components/apiReniec.js';
 import RegistroEventos from '../components/registroEventos.js';
+import AWS from 'aws-sdk';
+
+AWS.config.update({ region: 'us-east-2' });
+const lambda = new AWS.Lambda();
 
 const DataValidationFace = () => {
   const webcamRef = useRef(null);
@@ -21,11 +24,11 @@ const DataValidationFace = () => {
         setCapturedImage(imageSrc);
         setCameraActive(false);
         setLoading(false);
+        generateRandomNumber(); // Llamada a la función remota
       }, 1000);
     } else {
       setLoading(false);
     }
-    generateRandomNumber();
   };
 
   const cancelCapture = () => {
@@ -46,15 +49,33 @@ const DataValidationFace = () => {
 
   const generateRandomNumber = async () => {
     try {
-      const respuesta = generateRandomHash();
-      const fecha = generateCurrentDate();
-      const hora = generateCurrentTime();
-
+      const respuesta = await invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniec', {});
+      const fecha = await invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniecFecha', {});
+      const hora = await invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniecHora', {});
       await registroEventos.registrarEventoData(respuesta, fecha, hora);
-      generateMensaje();
-    } catch (error){
+
+      const mensaje = await invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniecMensaje', {});
+      console.log(mensaje);
+    } catch (error) {
       console.error("Error al enviar respuesta", error);
     }
+  };
+
+  const invokeLambdaFunction = async (functionARN, payload) => {
+    const params = {
+      FunctionName: functionARN,
+      Payload: JSON.stringify(payload),
+    };
+
+    return new Promise((resolve, reject) => {
+      lambda.invoke(params, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data.Payload);
+        }
+      });
+    });
   };
 
   return (
