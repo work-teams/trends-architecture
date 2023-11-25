@@ -131,7 +131,6 @@ class DataValidationForm extends React.Component {
                         <input
                             value={this.state.nombres}
                             onChange={(e) => {
-                                this.validarTexto(e, 'nombres'); // Llama a la función validarTexto
                                 this.setState({ nombres: e.target.value }); // Actualiza el estado con el valor del input
                             }}
                             type="text"
@@ -145,7 +144,6 @@ class DataValidationForm extends React.Component {
                         <input
                             value={this.state.apellidoPaterno}
                             onChange={(e) => {
-                                this.validarTexto(e, 'apellido-paterno'); // Llama a la función validarTexto
                                 this.setState({ apellidoPaterno: e.target.value }); // Actualiza el estado con el valor del input
                             }}
                             type="text"
@@ -159,7 +157,6 @@ class DataValidationForm extends React.Component {
                         <input
                             value={this.state.apellidoMaterno}
                             onChange={(e) => {
-                                this.validarTexto(e, 'apellido-materno'); // Llama a la función validarTexto
                                 this.setState({ apellidoMaterno: e.target.value }); // Actualiza el estado con el valor del input
                             }}
                             type="text"
@@ -173,7 +170,6 @@ class DataValidationForm extends React.Component {
                         <input
                             value={this.state.dni}
                             onChange={(e) => {
-                                this.validarNumero(e, 'dni'); // Llama a la función validarTexto
                                 this.setState({ dni: e.target.value }); // Actualiza el estado con el valor del input
                             }}
                             type="text"
@@ -203,7 +199,6 @@ class DataValidationForm extends React.Component {
                         <input
                             value={this.state.fechaNacimiento}
                             onChange={(e) => this.setState({ fechaNacimiento: e.target.value })}
-                            onBlur={(e) => this.validarEdadFecha(e, 'fecha-nacimiento')} // Llama a la función validarFechaEdad al perder el foco
                             type="date"
                             id="fecha-nacimiento"
                             name="fecha-nacimiento"
