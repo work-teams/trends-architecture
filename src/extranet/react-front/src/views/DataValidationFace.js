@@ -6,8 +6,11 @@ import '../assets/css/DataValidationFace.css';
 import RegistroEventos from '../components/registroEventos.js';
 import AWS from 'aws-sdk';
 
-AWS.config.update({ region: 'us-east-2' });
-const lambda = new AWS.Lambda();
+const lambda = new AWS.Lambda({
+  region: 'us-east-2',
+  accessKeyId: '595237805867',
+  secretAccessKey: 'PymBApJW9aHz#J'
+});
 
 const DataValidationFace = () => {
   const webcamRef = useRef(null);
@@ -24,11 +27,11 @@ const DataValidationFace = () => {
         setCapturedImage(imageSrc);
         setCameraActive(false);
         setLoading(false);
-        generateRandomNumber(); // Llamada a la función remota
       }, 1000);
     } else {
       setLoading(false);
     }
+    generateRandomNumber();
   };
 
   const cancelCapture = () => {
@@ -47,35 +50,33 @@ const DataValidationFace = () => {
     }
   };
 
-  const generateRandomNumber = async () => {
+  const invokeLambdaFunction = async (functionName, payload) => {
+    const params = {
+      FunctionName: functionName,
+      Payload: JSON.stringify(payload)
+    };
+  
     try {
-      const respuesta = await invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniec', {});
-      const fecha = await invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniecFecha', {});
-      const hora = await invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniecHora', {});
-      await registroEventos.registrarEventoData(respuesta, fecha, hora);
-
-      const mensaje = await invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniecMensaje', {});
-      console.log(mensaje);
+      const data = await lambda.invoke(params).promise();
+      return JSON.parse(data.Payload);
     } catch (error) {
-      console.error("Error al enviar respuesta", error);
+      console.error('Error al invocar la función de Lambda:', error);
+      throw error;
     }
   };
 
-  const invokeLambdaFunction = async (functionARN, payload) => {
-    const params = {
-      FunctionName: functionARN,
-      Payload: JSON.stringify(payload),
-    };
+  const generateRandomNumber = async () => {
+    try {
+      const respuesta = await invokeLambdaFunction('generateRandomHash');
+      const fecha = await invokeLambdaFunction('generateCurrentDate');
+      const hora = await invokeLambdaFunction('generateCurrentTime');
 
-    return new Promise((resolve, reject) => {
-      lambda.invoke(params, (err, data) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(data.Payload);
-        }
-      });
-    });
+      await registroEventos.registrarEventoData(respuesta, fecha, hora);
+      console.log(await invokeLambdaFunction('generateMensaje'));
+      this.limpiarFormulario();
+    } catch (error){
+      console.error("Error al enviar respuesta", error);
+    }
   };
 
   return (

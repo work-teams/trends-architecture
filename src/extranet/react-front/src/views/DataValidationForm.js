@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 import '../assets/css/DataValidationForm.css';
 import logo from '../assets/logo/logo.svg';
 import RegistroEventos from '../components/registroEventos.js';
-import AWS from 'aws-sdk';
-
-AWS.config.update({ region: 'us-east-2' });
-const lambda = new AWS.Lambda();
 
 const registroEventos = new RegistroEventos();
 
@@ -25,34 +21,16 @@ class DataValidationForm extends React.Component {
 
     async registrarEventoVD() {
         try {
-            const respuesta = await this.invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniec', {});
-            const fecha = await this.invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniecFecha', {});
-            const hora = await this.invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniecHora', {});
+            const respuesta = this.generateRandomHash();
+            const fecha = this.generateCurrentDate();
+            const hora = this.generateCurrentTime();
+    
             await registroEventos.registrarEventoData(respuesta, fecha, hora);
-
-            const mensaje = await this.invokeLambdaFunction('arn:aws:lambda:us-east-2:595237805867:function:apiReniecMensaje', {});
-            console.log(mensaje);
+            console.log(this.generateMensaje());
             this.limpiarFormulario();
         } catch (error) {
             console.error("Error al enviar respuesta", error);
         }
-    }
-
-    invokeLambdaFunction = async (functionARN, payload) => {
-        const params = {
-            FunctionName: functionARN,
-            Payload: JSON.stringify(payload),
-        };
-
-        return new Promise((resolve, reject) => {
-            lambda.invoke(params, (err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data.Payload);
-                }
-            });
-        });
     }
 
     async volver() {
