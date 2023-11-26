@@ -16,7 +16,7 @@ class WelcomeView extends React.Component {
                         <button className="validation-button">Validación de Datos Sensibles</button>
                     </Link>
                     <Link to="/data-validation-face">
-                    <button className="validation-button">Validación Facial</button>
+                        <button className="validation-button">Validación Facial</button>
                     </Link>
                 </div>
             </div>
