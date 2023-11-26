@@ -2,17 +2,20 @@
 const { gql } = require("apollo-server");
 
 const typeDefs = gql`
-  type Reporte {
-	fecha: String
-	hora: String
+  type LogEntry {
+    id: ID!
+    respuesta: String
+    fecha: String
+    hora: String
   }
-  
+
+  type LogEntryCounts {
+    logEntryCount: Int
+  }
+
   type Query {
-    obtenerReportes: [Reporte]
-  }
-  
-  type Mutation {
-    actualizarReportes: [Reporte]
+    logEntries: [LogEntry]
+    logEntryCounts: LogEntryCounts
   }
 `;
 

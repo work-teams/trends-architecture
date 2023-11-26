@@ -11,55 +11,32 @@ admin.initializeApp({
 
 const resolvers = {
   Query: {
-    obtenerReportes: async () => {
-      try {
-        // Lógica para obtener reportes desde Firebase
-        const firestore = admin.firestore();
-        const reportesRef = firestore.collection('logs');
-        const reportesSnapshot = await reportesRef.get();
-
-        const reportes = [];
-        reportesSnapshot.forEach(doc => {
-          const data = doc.data();
-          reportes.push({
-            fecha: data.fecha,
-            hora: data.hora,
-            // Agregar otros campos según tu estructura en Firebase
-          });
-        });
-
-        return reportes;
-      } catch (error) {
-        // Manejar errores
-        console.error('Error al obtener reportes:', error);
-        throw new Error('Error al obtener reportes');
-      }
-    },
-  },
+    logEntries: async () => {
+      const db = admin.database();
+      const logRef = db.ref("logs");
   
-  Mutation: {
-    actualizarReportes: async () => {
-      try {
-        // Lógica para obtener reportes desde Firebase
-        const firestore = admin.firestore();
-        const reportesRef = firestore.collection('logs');
-        const reportesSnapshot = await reportesRef.get();
+      // Utiliza orderByChild para ordenar por la propiedad 'fechaHora' (ajusta el nombre según tu estructura)
+      const snapshot = await logRef.orderByChild('fechaHora').once("value");
+  
+      const data = snapshot.val();
+      const logEntries = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+      }));
+  
+      return logEntries;
+  },  
+    logEntryCounts: async () => {
+      const db = admin.database();
+      const logRef = db.ref("logs");
 
-        const reportes = [];
-        reportesSnapshot.forEach(doc => {
-          const data = doc.data();
-          reportes.push({
-            fecha: data.fecha,
-            hora: data.hora,
-          });
-        });
+      const snapshot = await logRef.orderByChild('fechaHora').once("value");
+      const data = snapshot.val();
 
-        return reportes;
-      } catch (error) {
-        // Manejar errores
-        console.error('Error al obtener actualización de reportes', error);
-        throw new Error('Error al obtener actualización de reportes');
-      }
+      // Obtén el recuento de registros
+      const count = Object.keys(data).length;
+
+      return count;
     },
   },
 };
