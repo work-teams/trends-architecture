@@ -2,41 +2,44 @@
     <h1 class="titulo-reportes">Reportes</h1>
     <hr>
     <div class="container">
-      <div class="form-container">
-        <div class="dashboard">
-          <h2>Dashboard</h2>
-          <canvas id="grafico01" class="chart-container"></canvas>
-          <canvas id="grafico02" class="chart-container"></canvas>
+        <div class="form-container">
+            <div class="dashboard">
+                <h2>Dashboard</h2>
+                <canvas id="grafico01" class="chart-container"></canvas>
+                <canvas id="grafico02" class="chart-container"></canvas>
+            </div>
+            <div class="btn-form">
+                <button >Crear administrador</button>
+                <button @click="refrescarReportes">Actualizar Reportes</button>
+                <button >Salir</button>
+            </div>
         </div>
-        <div class="btn-form">
-          <button @click="irAdminForm">Crear administrador</button>
-          <button @click="refrescarReportes">Actualizar Reportes</button>
-          <button @click="irAuthForm">Salir</button>
-        </div>
-      </div>
-  
-      <div class="logs-list">
-        <h2>Listado de Logs</h2>
-        <div>
-            <label for="registrosAMostrar" style="display: inline-block;">Mostrar: </label>
-            <input type="number" id="registrosAMostrar" v-model="registrosAMostrar" min=0 max="totalRegistros" @input="validarRegistrosAMostrar" style="display: inline-block; width: 70px;">
-            <span style="display: inline-block;">de {{ totalRegistros }} logs</span>
-        </div>
-        <div class="radio-container">
-            <input type="radio" id="recientes" v-model="orden" value="recientes" name="opcionTiempoLogs" pattern="\d*" style="margin-right: 5px;" @change="ordenarLogs">
-            <label for="recientes">Logs más recientes</label>
 
-            <input type="radio" id="antiguos" v-model="orden" value="antiguos" name="opcionTiempoLogs" style="margin-right: 5px;" @change="ordenarLogs">
-            <label for="antiguos">Logs más antiguos</label>
+        <div class="logs-list">
+            <h2>Listado de Logs</h2>
+            <div>
+                <label for="registrosAMostrar" style="display: inline-block;">Mostrar: </label>
+                <input type="number" id="registrosAMostrar" v-model="registrosAMostrar" min=0 max="totalRegistros"
+                    @input="validarRegistrosAMostrar" style="display: inline-block; width: 70px;">
+                <span style="display: inline-block;">de {{ totalRegistros }} logs</span>
+            </div>
+            <div class="radio-container">
+                <input type="radio" id="recientes" v-model="orden" value="recientes" name="opcionTiempoLogs" pattern="\d*"
+                    style="margin-right: 5px;" @change="ordenarLogs">
+                <label for="recientes">Logs más recientes</label>
+
+                <input type="radio" id="antiguos" v-model="orden" value="antiguos" name="opcionTiempoLogs"
+                    style="margin-right: 5px;" @change="ordenarLogs">
+                <label for="antiguos">Logs más antiguos</label>
+            </div>
+            <ul>
+                <li v-for="(logs, index) in reportes.slice(0, registrosAMostrar)" :key="index">
+                    {{ logs.fecha }} --- {{ logs.hora }}
+                    <button @click="none" class="log-btn" disabled>Log</button>
+                </li>
+            </ul>
         </div>
-        <ul>
-            <li v-for="(logs, index) in reportes.slice(0, registrosAMostrar)" :key="index">
-                {{ logs.fecha }} --- {{ logs.hora }}
-                <button @click="none" class="log-btn" disabled>Log</button>
-            </li>
-        </ul>
-      </div>
-</div>
+    </div>
 </template>  
   
 <script>
@@ -63,16 +66,16 @@ export default {
             if (this.orden === 'recientes') {
                 // Ordenar de más reciente a más antiguo
                 this.reportes.sort((a, b) => {
-                const dateA = new Date(`${a.fecha} ${a.hora}`);
-                const dateB = new Date(`${b.fecha} ${b.hora}`);
-                return dateB - dateA;
+                    const dateA = new Date(`${a.fecha} ${a.hora}`);
+                    const dateB = new Date(`${b.fecha} ${b.hora}`);
+                    return dateB - dateA;
                 });
             } else if (this.orden === 'antiguos') {
                 // Ordenar de más antiguo a más reciente
                 this.reportes.sort((a, b) => {
-                const dateA = new Date(`${a.fecha} ${a.hora}`);
-                const dateB = new Date(`${b.fecha} ${b.hora}`);
-                return dateA - dateB;
+                    const dateA = new Date(`${a.fecha} ${a.hora}`);
+                    const dateB = new Date(`${b.fecha} ${b.hora}`);
+                    return dateA - dateB;
                 });
             }
         },
@@ -93,7 +96,7 @@ export default {
                 console.warn('Por favor, ingrese un número mayor que cero.');
                 return;
             }
-            else{
+            else {
                 try {
                     const response = await fetch("http://localhost:4000/graphql", {
                         method: "POST",
@@ -286,22 +289,6 @@ export default {
             // Otras lógicas que necesites realizar antes de recargar la página
             window.location.reload();
         },
-        irAdminForm() {
-            if (this.$router) {
-                console.log("Saliendo de la sesión del administrador...");
-                this.$router.push('/admin-form');
-            } else {
-                console.error("$router no está disponible");
-            }
-        },  
-        irAuthForm() {
-            if (this.$router) {
-                console.log("Dirigiendo a las opciones del Administrador...");
-                this.$router.push('/auth-form');
-            } else {
-                console.error("$router no está disponible");
-            }
-        }, 
     },
     mounted() {
         this.$nextTick(() => {
@@ -316,13 +303,12 @@ export default {
 </script>
   
 <style>
-
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: #f2f2f2;
-  margin: 0;
-  padding: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
@@ -404,75 +390,76 @@ li {
 }
 
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100vh;
-  margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin-top: 20px;
 }
 
 .form-container {
-  margin-right: 20px;
+    margin-right: 20px;
 }
 
 .form {
-  text-align: center;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  max-width: 300px;
-  margin: 0 auto;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .chart-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .bar {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .label {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .bar-inner {
-  background-color: #3498db;
-  height: 20px; /* Altura de la barra */
-  transition: width 0.5s ease;
+    background-color: #3498db;
+    height: 20px;
+    /* Altura de la barra */
+    transition: width 0.5s ease;
 }
 
 .count {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 .dashboard {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
 }
 
 .logs-list {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 0px;
-  padding-left: 20px;
-  padding-right: 36px;
-  height: 669px;
-  overflow-y: auto;
-  background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 36px;
+    height: 669px;
+    overflow-y: auto;
+    background-color: #ffffff;
 }
 
 .radio-container {
     display: flex;
     align-items: center;
     margin-right: 5px;
-    }
+}
 
 .radio-container input {
     margin-right: 5px;
@@ -481,8 +468,9 @@ li {
 h1.titulo-reportes {
     background-color: #333;
     color: white;
-    padding: 10px; /* Ajusta según sea necesario para el espaciado interno */
-  }
+    padding: 10px;
+    /* Ajusta según sea necesario para el espaciado interno */
+}
 
 button.log-btn:hover {
     cursor: default;
