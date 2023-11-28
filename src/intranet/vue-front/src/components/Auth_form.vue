@@ -10,7 +10,7 @@
         <input v-model="password" type="password" class="form-control form-control-sm" id="password" name="password" required />
       </div>
       <div class="d-flex justify-content-around mt-5">
-        <button class="btn btn-success px-4" type="submit" id="login-button">
+        <button class="btn btn-success px-4" type="submit" id="login-button" @click="iniciarSesion">
           <i class="fas fa-check-circle mr-2"></i>Iniciar Sesión
         </button>
         <button class="btn btn-dark px-4" type="button" @click="volver" id="volver-button">
@@ -81,6 +81,16 @@ export default {
       } catch (error) {
         console.error("Error al procesar la autenticación:", error);
       }
+    },
+
+    iniciarSesion() {
+      // Simula una autenticación exitosa
+      // En un entorno real, aquí deberías realizar la lógica de autenticación
+      // y redirigir solo si la autenticación es exitosa.
+      // Por ejemplo:
+      // if (autenticacionExitosa) {
+      this.$router.push('/reports'); // Redirige a la vista de informes
+      // }
     },
 
     volver() {

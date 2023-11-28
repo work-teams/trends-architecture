@@ -1,25 +1,13 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <!-- <Auth_Form /> -->
-    <ReportsLog />
-    <!-- <AdminForm /> -->
+    <router-view /> <!-- Aquí se cargará la vista actual según la ruta -->
   </div>
 </template>
 
 <script>
-// import Auth_Form from './components/Auth_form.vue';
-import ReportsLog from './components/ReportsLog.vue';
-// import AdminForm from './components/AdminForm.vue';
-
 export default {
   name: 'App',
-  components: {
-    // Auth_Form,
-    ReportsLog,
-    // AdminForm,
-
-  },
 }
 </script>
 
