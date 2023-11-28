@@ -191,9 +191,7 @@ export default {
         },
 
         volver() {
-            console.log("Volviendo...");
-            // Lógica para volver y actualizar la lista de administradores...
-            this.actualizarListaAdmins();
+            this.$router.push('/reports'); // Redirige a la vista de informes
         },
     },
     mounted() {

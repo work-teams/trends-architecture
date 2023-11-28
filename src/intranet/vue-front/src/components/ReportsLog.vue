@@ -9,9 +9,9 @@
                 <canvas id="grafico02" class="chart-container"></canvas>
             </div>
             <div class="btn-form">
-                <button >Crear administrador</button>
+                <button @click="irAdmin">Crear administrador</button>
                 <button @click="refrescarReportes">Actualizar Reportes</button>
-                <button >Salir</button>
+                <button @click="salir">Salir</button>
             </div>
         </div>
 
@@ -288,6 +288,14 @@ export default {
         refrescarReportes() {
             // Otras lógicas que necesites realizar antes de recargar la página
             window.location.reload();
+        },
+
+        salir(){
+            this.$router.push('/'); // Redirige a la vista de informes
+        },
+
+        irAdmin(){
+            this.$router.push('/admin'); // Redirige a la vista de informes
         },
     },
     mounted() {
