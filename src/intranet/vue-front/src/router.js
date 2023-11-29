@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Auth_Form from './components/Auth_form.vue';
+import Auth_Form from './components/AuthForm.vue';
 import ReportsLog from './components/ReportsLog.vue';
 import AdminForm from './components/AdminForm.vue';
 

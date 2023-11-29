@@ -101,7 +101,7 @@ export default {
                 };
 
                 // Lógica para actualizar administrador en la base de datos...
-                const adminResponse = await fetch("http://localhost:4000/graphql", {
+                const adminResponse = await fetch("https://msbackendadmin.onrender.com/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -138,7 +138,7 @@ export default {
         async actualizarListaAdmins() {
             try {
                 // Lógica para obtener la lista actualizada de administradores...
-                const response = await fetch("http://localhost:4000/graphql", {
+                const response = await fetch("https://msbackendadmin.onrender.com/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

@@ -74,7 +74,7 @@ export default {
           this.$router.push('/reports'); // Redirige a la vista de informes
         } else {
           // Autenticación fallida, puedes mostrar un mensaje de error
-          console.error("Autenticación fallida");
+          alert("Administrador no registrado");
         }
 
         this.limpiarFormulario();

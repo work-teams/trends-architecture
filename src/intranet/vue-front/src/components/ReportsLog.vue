@@ -119,9 +119,7 @@ export default {
 
                     if (responseData.data && responseData.data.logEntries) {
                         this.reportes = responseData.data.logEntries;
-                        const logs = this.reportes;
                         this.totalRegistros = responseData.data.logEntries.length;
-                        console.log(JSON.parse(JSON.stringify(logs)))
 
                         // Verifica si this.chart está definido antes de actualizar el gráfico
                         if (!this.chart) {
