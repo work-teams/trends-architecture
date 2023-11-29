@@ -56,7 +56,7 @@ export default {
                 };
 
                 // Lógica para agregar administrador en la base de datos...
-                const adminResponse = await fetch("http://localhost:4000/graphql", {
+                const adminResponse = await fetch("https://msbackendadmin.onrender.com/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
