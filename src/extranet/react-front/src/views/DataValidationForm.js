@@ -118,8 +118,8 @@ class DataValidationForm extends React.Component {
             alert('La edad no coincide con la fecha de nacimiento.');
             this.setState({ fechaNacimiento: '' }); // Limpiar campo fecha de nacimiento en el estado
         }
-    } 
-
+    }
+    
     render() {
         return (
             <div>
@@ -206,11 +206,14 @@ class DataValidationForm extends React.Component {
                         />
                     </div>
                     <div className="form-group">
+                        
+                        <Link to="/">
+                            <button id="volver-button">Volver</button>
+                        </Link>
+                        <Link to="/notification">
                         <button type="submit" onClick={() => this.registrarEventoVD()} id="validar-button">
                             Validar
                         </button>
-                        <Link to="/">
-                            <button id="volver-button">Volver</button>
                         </Link>
                     </div>
                 </form>

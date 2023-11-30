@@ -93,7 +93,7 @@ const DataValidationFace = () => {
               <button className="action-button">Volver</button>
             </Link>
             <button onClick={capture} className="action-button">
-              <i className="fas fa-camera-retro mr-2"></i>Validar
+              <i className="fas fa-camera-retro mr-2"></i>Capturar
             </button>
           </div>
         </div>
@@ -114,9 +114,12 @@ const DataValidationFace = () => {
           <div className="image-bar">
             <h2 className="font-weight-bold">Foto capturada</h2>
             <div className="button-container">
-              <button onClick={saveImage} className="action-button">
-                <i className="far fa-save mr-2"></i>Guardar
-              </button>
+              
+              <Link to="/notificationf">
+                <button id="validar-button">
+                  Validar
+                </button>
+              </Link>
               <button onClick={cancelCapture} className="action-button">
                 <i className="fas fa-arrow-left mr-2"></i>Cancelar
               </button>
