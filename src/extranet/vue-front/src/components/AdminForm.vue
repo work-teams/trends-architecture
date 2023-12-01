@@ -56,7 +56,7 @@ export default {
                 };
 
                 // Lógica para agregar administrador en la base de datos...
-                const adminResponse = await fetch("http://localhost:4000/graphql", {
+                const adminResponse = await fetch("https://msbackendadmin.onrender.com/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -101,7 +101,7 @@ export default {
                 };
 
                 // Lógica para actualizar administrador en la base de datos...
-                const adminResponse = await fetch("http://localhost:4000/graphql", {
+                const adminResponse = await fetch("https://msbackendadmin.onrender.com/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -138,7 +138,7 @@ export default {
         async actualizarListaAdmins() {
             try {
                 // Lógica para obtener la lista actualizada de administradores...
-                const response = await fetch("http://localhost:4000/graphql", {
+                const response = await fetch("https://msbackendadmin.onrender.com/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -191,9 +191,7 @@ export default {
         },
 
         volver() {
-            console.log("Volviendo...");
-            // Lógica para volver y actualizar la lista de administradores...
-            this.actualizarListaAdmins();
+            this.$router.push('/reports'); // Redirige a la vista de informes
         },
     },
     mounted() {

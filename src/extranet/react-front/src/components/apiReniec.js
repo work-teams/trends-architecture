@@ -1,5 +1,3 @@
-import Swal from 'sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.css';
 
 export const generateRandomHash = () => {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -24,21 +22,5 @@ export const generateCurrentTime = () => {
 export const generateMensaje = () => {
     const numeroAleatorio = Math.floor(Math.random() * 100);
     const esPar = numeroAleatorio % 2 === 0;
-    const mensaje = esPar ? 'Se validó correctamente' : 'Se validó incorrectamente';
-
-    if (esPar) {
-        Swal.fire({
-            icon: 'success',
-            title: mensaje,
-            showConfirmButton: false,
-            timer: 2500
-        });
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: mensaje
-        });
-    }
-
-    return mensaje;
+    return esPar ? 'Se validó correctamente' : 'Se validó incorrectamente';
 };

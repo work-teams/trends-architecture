@@ -9,8 +9,13 @@
   },
   "dependencies": {
     "@vue/cli": "^5.0.8",
+    "chart.js": "^4.4.0",
+    "chartjs": "^0.3.24",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "core-js": "^3.8.3",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
