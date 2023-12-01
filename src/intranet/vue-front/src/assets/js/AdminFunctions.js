@@ -1,41 +1,27 @@
-<template>
-    <div class="container">
-        <div class="form-container">
-            <h2>Gestión de Administradores</h2>
-            <div class="form">
-                <label>Nombres:</label>
-                <input type="text" v-model="nombres" placeholder="Nombres">
-                <label>Apellidos:</label>
-                <input type="text" v-model="apellidos" placeholder="Apellidos">
-                <label>Correo:</label>
-                <input type="email" v-model="correo" placeholder="Correo">
-                <label>Teléfono:</label>
-                <input type="tel" v-model="telefono" placeholder="Teléfono">
+export default {
+    data() {
+        return {
+            nombres: "",
+            apellidos: "",
+            correo: "",
+            telefono: "",
+            administradores: [],
+            selectedAdmin: null,
+            isEdit: false,
+        };
+    },
+    methods: {
+        async agregarAdmin() {
+            try {
+                const administratorInput = {
+                    nombres: this.nombres,
+                    apellidos: this.apellidos,
+                    correo: this.correo,
+                    telefono: this.telefono,
+                };
 
-                <button @click="agregarAdmin" v-if="!isEdit">Agregar Administrador</button>
-                <button @click="actualizarAdmin" v-if="isEdit">Actualizar Administrador</button>
-                <button @click="limpiarCampos">Limpiar Campos</button>
-                <button @click="volver">Volver</button>
-            </div>
-        </div>
-
-        <div class="admin-list">
-            <h2>Lista de Administradores</h2>
-            <ul>
-                <li v-for="(admin, index) in administradores" :key="index">
-                    {{ admin.nombres }} {{ admin.apellidos }} - {{ admin.correo }} - {{ admin.telefono }}
-                    <button @click="seleccionarAdmin(admin)">Editar</button>
-                </li>
-            </ul>
-        </div>
-    </div>
-</template>
-
-<script src="./AdminFunctions.js" />
-
-<<<<<<< HEAD:src/extranet/vue-front/src/components/AdminForm.vue
                 // Lógica para agregar administrador en la base de datos...
-                const adminResponse = await fetch("https://msbackendadmin.onrender.com/graphql", {
+                const adminResponse = await fetch("http://localhost:4000/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -80,7 +66,7 @@
                 };
 
                 // Lógica para actualizar administrador en la base de datos...
-                const adminResponse = await fetch("https://msbackendadmin.onrender.com/graphql", {
+                const adminResponse = await fetch("http://localhost:4000/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -117,7 +103,7 @@
         async actualizarListaAdmins() {
             try {
                 // Lógica para obtener la lista actualizada de administradores...
-                const response = await fetch("https://msbackendadmin.onrender.com/graphql", {
+                const response = await fetch("http://localhost:4000/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -170,91 +156,12 @@
         },
 
         volver() {
-            this.$router.push('/reports'); // Redirige a la vista de informes
+            console.log("Volviendo...");
+            // Lógica para volver y actualizar la lista de administradores...
+            this.actualizarListaAdmins();
         },
     },
     mounted() {
         this.actualizarListaAdmins(); // Llama a la función para cargar la lista cuando la vista esté montada
     }
 };
-</script>
-  
-<style scoped>
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    /* Alinear elementos en la parte superior */
-    height: 100vh;
-    margin-top: 20px;
-    /* Ajustar el margen superior según tus necesidades */
-}
-
-.form-container {
-    margin-right: 20px;
-    /* Espaciado entre el formulario y la lista */
-}
-
-.form {
-    text-align: center;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input {
-    margin-bottom: 10px;
-    padding: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    margin-top: 10px;
-    padding: 8px 15px;
-    cursor: pointer;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-}
-
-.admin-list {
-    border: 1px solid #ccc;
-    padding: 10px;
-    overflow-y: auto;
-    /* Agregado para la barra de desplazamiento vertical */
-    max-height: 600px;
-    /* Altura máxima para la lista antes de agregar la barra de desplazamiento */
-    max-width: 1000px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-li {
-    margin-bottom: 10px;
-    background-color: #ecf0f1;
-    padding: 8px;
-    border-radius: 4px;
-    width: 100%;
-}
-</style>
-=======
-<style src="./AdminStyle.css" scoped />
->>>>>>> 160cd5d9ba47d3ee4866d0eefb9d8cf53beb5293:src/intranet/vue-front/src/components/AdminForm.vue

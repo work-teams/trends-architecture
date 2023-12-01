@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Webcam from 'react-webcam';
+<<<<<<< HEAD:src/extranet/react-front/src/views/DataValidationFace.js
 import logo from '../assets/logo/logo.svg';
 import '../assets/css/DataValidationFace.css';
 import { generateRandomHash, generateCurrentDate, generateCurrentTime, generateMensaje } from '../components/apiReniec.js';
@@ -56,23 +57,35 @@ const DataValidationFace = () => {
       console.error("Error al enviar respuesta", error);
     }
   };
+=======
+import { saveImage } from '../components/js/logValidationFace';
+import logo from './logo.svg';
+import './DataValidationFace.css';
+import useImageCapture from '../src/Components/js/captureLogic';
+import validarDatosFace from '../src/services/validarDatosFace';
+
+const DataValidationFace = () => {
+  const { webcamRef, capturedImage, loading, cancelCapture } = useImageCapture();
+>>>>>>> 160cd5d9ba47d3ee4866d0eefb9d8cf53beb5293:src/extranet/react-front/src/DataValidationFace.js
 
   return (
     <div className="app-container">
       <img src={logo} className="App-logo" alt="logo" />
       <h1 className="font-weight-bold">Autenticación Facial</h1>
+
       {cameraActive && (
         <div className={`capture-bar ${loading ? 'loading-overlay' : ''}`}>
           <div className="button-container">
             <Link to="/">
               <button className="action-button">Volver</button>
             </Link>
-            <button onClick={capture} className="action-button">
+            <button type="submit" onClick={validarDatosFace(capturedImage)} className="action-button">
               <i className="fas fa-camera-retro mr-2"></i>Validar
             </button>
           </div>
         </div>
       )}
+
       {cameraActive && (
         <div className="camera-container">
           <Webcam
@@ -84,6 +97,7 @@ const DataValidationFace = () => {
           />
         </div>
       )}
+
       <div className={`image-container ${loading ? 'hidden' : ''}`}>
         {capturedImage && (
           <div className="image-bar">
@@ -100,6 +114,7 @@ const DataValidationFace = () => {
         )}
         <img src={capturedImage} className={capturedImage ? 'captured-image' : 'hidden'} alt="Captured" />
       </div>
+
       {loading && (
         <div className="loading-overlay">
           <div className="spinner-border text-primary" role="status"></div>

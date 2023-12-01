@@ -1,57 +1,3 @@
-<<<<<<< HEAD:src/extranet/vue-front/src/components/ReportsLog.vue
-=======
-<script>
-    import './ReportsLogFunctions';
-</script>
-
->>>>>>> 160cd5d9ba47d3ee4866d0eefb9d8cf53beb5293:src/intranet/vue-front/src/components/ReportsLog.vue
-<template>
-    <h1 class="titulo-reportes">Reportes</h1>
-    <hr>
-    <div class="container">
-<<<<<<< HEAD:src/extranet/vue-front/src/components/ReportsLog.vue
-        <div class="form-container">
-            <div class="dashboard">
-                <h2>Dashboard</h2>
-                <canvas id="grafico01" class="chart-container"></canvas>
-                <canvas id="grafico02" class="chart-container"></canvas>
-            </div>
-            <div class="btn-form">
-                <button @click="irAdmin">Crear administrador</button>
-                <button @click="refrescarReportes">Actualizar Reportes</button>
-                <button @click="salir">Salir</button>
-            </div>
-        </div>
-
-        <div class="logs-list">
-            <h2>Listado de Logs</h2>
-            <div>
-                <label for="registrosAMostrar" style="display: inline-block;">Mostrar: </label>
-                <input type="number" id="registrosAMostrar" v-model="registrosAMostrar" min=0 max="totalRegistros"
-                    @input="validarRegistrosAMostrar" style="display: inline-block; width: 70px;">
-                <span style="display: inline-block;">de {{ totalRegistros }} logs</span>
-            </div>
-            <div class="radio-container">
-                <input type="radio" id="recientes" v-model="orden" value="recientes" name="opcionTiempoLogs" pattern="\d*"
-                    style="margin-right: 5px;" @change="ordenarLogs">
-                <label for="recientes">Logs más recientes</label>
-
-                <input type="radio" id="antiguos" v-model="orden" value="antiguos" name="opcionTiempoLogs"
-                    style="margin-right: 5px;" @change="ordenarLogs">
-                <label for="antiguos">Logs más antiguos</label>
-            </div>
-            <ul>
-                <li v-for="(logs, index) in reportes.slice(0, registrosAMostrar)" :key="index">
-                    {{ logs.fecha }} --- {{ logs.hora }}
-                    <button @click="none" class="log-btn" disabled>Log</button>
-                </li>
-            </ul>
-        </div>
-    </div>
-</template>  
-  
-<script>
-
 import Chart from 'chart.js/auto';
 
 export default {
@@ -74,16 +20,16 @@ export default {
             if (this.orden === 'recientes') {
                 // Ordenar de más reciente a más antiguo
                 this.reportes.sort((a, b) => {
-                    const dateA = new Date(`${a.fecha} ${a.hora}`);
-                    const dateB = new Date(`${b.fecha} ${b.hora}`);
-                    return dateB - dateA;
+                const dateA = new Date(`${a.fecha} ${a.hora}`);
+                const dateB = new Date(`${b.fecha} ${b.hora}`);
+                return dateB - dateA;
                 });
             } else if (this.orden === 'antiguos') {
                 // Ordenar de más antiguo a más reciente
                 this.reportes.sort((a, b) => {
-                    const dateA = new Date(`${a.fecha} ${a.hora}`);
-                    const dateB = new Date(`${b.fecha} ${b.hora}`);
-                    return dateA - dateB;
+                const dateA = new Date(`${a.fecha} ${a.hora}`);
+                const dateB = new Date(`${b.fecha} ${b.hora}`);
+                return dateA - dateB;
                 });
             }
         },
@@ -104,7 +50,7 @@ export default {
                 console.warn('Por favor, ingrese un número mayor que cero.');
                 return;
             }
-            else {
+            else{
                 try {
                     const response = await fetch("https://msbackreport.onrender.com/graphql", {
                         method: "POST",
@@ -127,7 +73,9 @@ export default {
 
                     if (responseData.data && responseData.data.logEntries) {
                         this.reportes = responseData.data.logEntries;
+                        const logs = this.reportes;
                         this.totalRegistros = responseData.data.logEntries.length;
+                        console.log(JSON.parse(JSON.stringify(logs)))
 
                         // Verifica si this.chart está definido antes de actualizar el gráfico
                         if (!this.chart) {
@@ -295,14 +243,22 @@ export default {
             // Otras lógicas que necesites realizar antes de recargar la página
             window.location.reload();
         },
-
-        salir(){
-            this.$router.push('/'); // Redirige a la vista de informes
-        },
-
-        irAdmin(){
-            this.$router.push('/admin'); // Redirige a la vista de informes
-        },
+        irAdminForm() {
+            if (this.$router) {
+                console.log("Saliendo de la sesión del administrador...");
+                this.$router.push('/admin-form');
+            } else {
+                console.error("$router no está disponible");
+            }
+        },  
+        irAuthForm() {
+            if (this.$router) {
+                console.log("Dirigiendo a las opciones del Administrador...");
+                this.$router.push('/auth-form');
+            } else {
+                console.error("$router no está disponible");
+            }
+        }, 
     },
     mounted() {
         this.$nextTick(() => {
@@ -314,217 +270,3 @@ export default {
         });
     }
 };
-</script>
-  
-<style>
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    /* Alinear elementos en la parte superior */
-    height: 100vh;
-    margin-top: 20px;
-    /* Ajustar el margen superior según tus necesidades */
-}
-
-.form-container {
-    margin-right: 20px;
-    /* Espaciado entre el formulario y la lista */
-}
-
-.btn-form {
-    text-align: center;
-    display: grid;
-    grid-template-columns: repeat(3, 200px);
-    gap: 10px;
-    margin: 20px auto;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input {
-    margin-bottom: 10px;
-    padding: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    margin-top: 10px;
-    padding: 8px 15px;
-    cursor: pointer;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-}
-
-button.log-btn {
-    cursor: default;
-}
-
-.admin-list {
-    border: 1px solid #ccc;
-    padding: 10px;
-    overflow-y: auto;
-    /* Agregado para la barra de desplazamiento vertical */
-    max-height: 600px;
-    /* Altura máxima para la lista antes de agregar la barra de desplazamiento */
-    max-width: 1000px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-li {
-    margin-bottom: 5px;
-    background-color: #ecf0f1;
-    padding: 5px;
-    border-radius: 4px;
-    width: 100%;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
-    margin-top: 20px;
-}
-
-.form-container {
-    margin-right: 20px;
-}
-
-.form {
-    text-align: center;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-.chart-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.bar {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.label {
-    margin-right: 10px;
-}
-
-.bar-inner {
-    background-color: #3498db;
-    height: 20px;
-    /* Altura de la barra */
-    transition: width 0.5s ease;
-}
-
-.count {
-    margin-left: 10px;
-}
-
-.dashboard {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background-color: #ffffff;
-}
-
-.logs-list {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 0px;
-    padding-left: 20px;
-    padding-right: 36px;
-    height: 669px;
-    overflow-y: auto;
-    background-color: #ffffff;
-}
-
-.radio-container {
-    display: flex;
-    align-items: center;
-    margin-right: 5px;
-}
-
-.radio-container input {
-    margin-right: 5px;
-}
-
-h1.titulo-reportes {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    /* Ajusta según sea necesario para el espaciado interno */
-}
-
-button.log-btn:hover {
-    cursor: default;
-}
-</style>
-=======
-      <div class="form-container">
-        <div class="dashboard">
-          <h2>Dashboard</h2>
-          <canvas id="grafico01" class="chart-container"></canvas>
-          <canvas id="grafico02" class="chart-container"></canvas>
-        </div>
-        <div class="btn-form">
-          <button @click="irAdminForm">Crear administrador</button>
-          <button @click="refrescarReportes">Actualizar Reportes</button>
-          <button @click="irAuthForm">Salir</button>
-        </div>
-      </div>
-  
-      <div class="logs-list">
-        <h2>Listado de Logs</h2>
-        <div>
-            <label for="registrosAMostrar" style="display: inline-block;">Mostrar: </label>
-            <input type="number" id="registrosAMostrar" v-model="registrosAMostrar" min=0 max="totalRegistros" @input="validarRegistrosAMostrar" style="display: inline-block; width: 70px;">
-            <span style="display: inline-block;">de {{ totalRegistros }} logs</span>
-        </div>
-        <div class="radio-container">
-            <input type="radio" id="recientes" v-model="orden" value="recientes" name="opcionTiempoLogs" pattern="\d*" style="margin-right: 5px;" @change="ordenarLogs">
-            <label for="recientes">Logs más recientes</label>
-
-            <input type="radio" id="antiguos" v-model="orden" value="antiguos" name="opcionTiempoLogs" style="margin-right: 5px;" @change="ordenarLogs">
-            <label for="antiguos">Logs más antiguos</label>
-        </div>
-        <ul>
-            <li v-for="(logs, index) in reportes.slice(0, registrosAMostrar)" :key="index">
-                {{ logs.fecha }} --- {{ logs.hora }}
-                <button @click="none" class="log-btn" disabled>Log</button>
-            </li>
-        </ul>
-      </div>
-</div>
-</template>
->>>>>>> 160cd5d9ba47d3ee4866d0eefb9d8cf53beb5293:src/intranet/vue-front/src/components/ReportsLog.vue
