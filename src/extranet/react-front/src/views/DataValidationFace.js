@@ -10,7 +10,31 @@ const DataValidationFace = () => {
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraActive, setCameraActive] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [hora, setHora] = useState('');
+  const [fecha, setFecha] = useState('');
+  const [mensaje, setMensaje] = useState('');
   const registroEventos = new RegistroEventos();
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const showModalContent = async () => {
+    try {
+      const respuesta = generateRandomHash();
+      const fecha = generateCurrentDate();
+      const hora = generateCurrentTime();
+
+      await registroEventos.registrarEventoData(respuesta, fecha, hora);
+      setHora(hora);
+      setFecha(fecha);
+      setMensaje(generateMensaje());
+      setShowModal(true);
+    } catch (error) {
+      console.error("Error al enviar respuesta", error);
+    }
+  };
 
   const capture = () => {
     setLoading(true);
@@ -115,11 +139,11 @@ const DataValidationFace = () => {
             <h2 className="font-weight-bold">Foto capturada</h2>
             <div className="button-container">
               
-              <Link to="/notificationf">
-                <button id="validar-button">
-                  Validar
-                </button>
-              </Link>
+            
+            <button onClick={showModalContent} id="validar-button">
+              Validar
+            </button>
+      
               <button onClick={cancelCapture} className="action-button">
                 <i className="fas fa-arrow-left mr-2"></i>Cancelar
               </button>
@@ -128,6 +152,17 @@ const DataValidationFace = () => {
         )}
         <img src={capturedImage} className={capturedImage ? 'captured-image' : 'hidden'} alt="Captured" />
       </div>
+      {showModal && (
+        <div className="modal">
+          <section className="modal-content">
+            <h1>Notification</h1>
+            <p>Hora: {hora}</p>
+            <p>Fecha: {fecha}</p>
+            <p>{mensaje}</p>
+            <button onClick={closeModal} className="button-cerrar" >Cerrar</button>
+          </section>
+        </div>
+      )}
       {loading && (
         <div className="loading-overlay">
           <div className="spinner-border text-primary" role="status"></div>
