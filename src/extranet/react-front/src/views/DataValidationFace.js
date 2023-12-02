@@ -1,18 +1,41 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Webcam from 'react-webcam';
-<<<<<<< HEAD:src/extranet/react-front/src/views/DataValidationFace.js
 import logo from '../assets/logo/logo.svg';
 import '../assets/css/DataValidationFace.css';
-import { generateRandomHash, generateCurrentDate, generateCurrentTime, generateMensaje } from '../components/apiReniec.js';
 import RegistroEventos from '../components/registroEventos.js';
+import Notification from './Notification.js';
 
 const DataValidationFace = () => {
   const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraActive, setCameraActive] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [hora, setHora] = useState('');
+  const [fecha, setFecha] = useState('');
+  const [mensaje, setMensaje] = useState('');
   const registroEventos = new RegistroEventos();
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const showModalContent = async () => {
+    try {
+      const respuesta = generateRandomHash();
+      const fecha = generateCurrentDate();
+      const hora = generateCurrentTime();
+
+      await registroEventos.registrarEventoData(respuesta, fecha, hora);
+      setHora(hora);
+      setFecha(fecha);
+      setMensaje(generateMensaje());
+      setShowModal(true);
+    } catch (error) {
+      console.error("Error al enviar respuesta", error);
+    }
+  };
 
   const capture = () => {
     setLoading(true);
@@ -52,40 +75,54 @@ const DataValidationFace = () => {
       const hora = generateCurrentTime();
 
       await registroEventos.registrarEventoData(respuesta, fecha, hora);
-      generateMensaje();
+      console.log(generateMensaje());
     } catch (error){
       console.error("Error al enviar respuesta", error);
     }
   };
-=======
-import { saveImage } from '../components/js/logValidationFace';
-import logo from './logo.svg';
-import './DataValidationFace.css';
-import useImageCapture from '../src/Components/js/captureLogic';
-import validarDatosFace from '../src/services/validarDatosFace';
 
-const DataValidationFace = () => {
-  const { webcamRef, capturedImage, loading, cancelCapture } = useImageCapture();
->>>>>>> 160cd5d9ba47d3ee4866d0eefb9d8cf53beb5293:src/extranet/react-front/src/DataValidationFace.js
+  const generateRandomHash = () => {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  };
+
+  const generateCurrentDate = () => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const generateCurrentTime = () => {
+    const currentDate = new Date();
+    const hours = currentDate.getHours().toString().padStart(2, '0');
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
+  const generateMensaje = () => {
+    const numeroAleatorio = Math.floor(Math.random() * 100);
+    const esPar = numeroAleatorio % 2 === 0;
+    return esPar ? 'Se validó correctamente' : 'Se validó incorrectamente';
+  };
 
   return (
     <div className="app-container">
       <img src={logo} className="App-logo" alt="logo" />
       <h1 className="font-weight-bold">Autenticación Facial</h1>
-
       {cameraActive && (
         <div className={`capture-bar ${loading ? 'loading-overlay' : ''}`}>
           <div className="button-container">
             <Link to="/">
               <button className="action-button">Volver</button>
             </Link>
-            <button type="submit" onClick={validarDatosFace(capturedImage)} className="action-button">
-              <i className="fas fa-camera-retro mr-2"></i>Validar
+            <button onClick={capture} className="action-button">
+              <i className="fas fa-camera-retro mr-2"></i>Capturar
             </button>
           </div>
         </div>
       )}
-
       {cameraActive && (
         <div className="camera-container">
           <Webcam
@@ -97,15 +134,17 @@ const DataValidationFace = () => {
           />
         </div>
       )}
-
       <div className={`image-container ${loading ? 'hidden' : ''}`}>
         {capturedImage && (
           <div className="image-bar">
             <h2 className="font-weight-bold">Foto capturada</h2>
             <div className="button-container">
-              <button onClick={saveImage} className="action-button">
-                <i className="far fa-save mr-2"></i>Guardar
-              </button>
+              
+            
+            <button onClick={showModalContent} id="validar-button">
+              Validar
+            </button>
+      
               <button onClick={cancelCapture} className="action-button">
                 <i className="fas fa-arrow-left mr-2"></i>Cancelar
               </button>
@@ -114,7 +153,17 @@ const DataValidationFace = () => {
         )}
         <img src={capturedImage} className={capturedImage ? 'captured-image' : 'hidden'} alt="Captured" />
       </div>
-
+      {showModal && (
+        <div className="modal">
+          <section className="modal-content">
+            <h1>Notification</h1>
+            <p>Hora: {hora}</p>
+            <p>Fecha: {fecha}</p>
+            <p>{mensaje}</p>
+            <button onClick={closeModal} className="button-cerrar" >Cerrar</button>
+          </section>
+        </div>
+      )}
       {loading && (
         <div className="loading-overlay">
           <div className="spinner-border text-primary" role="status"></div>
