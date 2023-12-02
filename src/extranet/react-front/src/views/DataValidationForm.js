@@ -16,8 +16,20 @@ class DataValidationForm extends React.Component {
             dni: '',
             edad: '',
             fechaNacimiento: '',
+            showModal: false,
+            hora: '',
+            fecha: '',
+            mensaje: ''
         };
     }
+
+    mostrarModal = () => {
+        this.setState({ showModal: true });
+    };
+
+    ocultarModal = () => {
+        this.setState({ showModal: false });
+    };
 
     async registrarEventoVD() {
         try {
@@ -26,7 +38,13 @@ class DataValidationForm extends React.Component {
             const hora = this.generateCurrentTime();
     
             await registroEventos.registrarEventoData(respuesta, fecha, hora);
-            console.log(this.generateMensaje());
+            const mensaje = this.generateMensaje();
+            this.setState({
+                hora,
+                fecha,
+                mensaje
+            });
+            this.mostrarModal();
             this.limpiarFormulario();
         } catch (error) {
             console.error("Error al enviar respuesta", error);
@@ -210,14 +228,28 @@ class DataValidationForm extends React.Component {
                         <Link to="/">
                             <button id="volver-button">Volver</button>
                         </Link>
-                        <Link to="/notification">
+                        
                         <button type="submit" onClick={() => this.registrarEventoVD()} id="validar-button">
                             Validar
                         </button>
-                        </Link>
+                        
+
+                        
+
+
                     </div>
                 </form>
+                <div className={this.state.showModal ? "modal display-block" : "modal display-none"}>
+                    <section className="modal-main">
+                        <h1>Notification</h1>
+                        <p>Hora: {this.state.hora}</p>
+                        <p>Fecha: {this.state.fecha}</p>
+                        <h3>{this.state.mensaje}</h3>
+                        <button onClick={this.ocultarModal} className="buton" >Cerrar</button>
+                    </section>
+                </div>
             </div>
+            
         );
     }
 }
